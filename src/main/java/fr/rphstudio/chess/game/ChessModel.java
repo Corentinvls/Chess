@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChessModel implements IChess{
-    private GameBoard gameBoard ;
+public class ChessModel implements IChess {
+    private GameBoard gameBoard;
     private static final IChess instance = new ChessModel();
 
     private ChessModel() {
@@ -18,11 +18,9 @@ public class ChessModel implements IChess{
     }
 
 
-
     public static IChess getInstance() {
         return instance;
     }
-
 
 
     @Override
@@ -32,12 +30,24 @@ public class ChessModel implements IChess{
 
     @Override
     public ChessType getPieceType(ChessPosition p) throws EmptyCellException, OutOfBoardException {
-        return ChessType.TYP_PAWN;
+        checkPosition(p);
+        Piece piece = gameBoard.getPiece(p);
+        if (piece != null) {
+            return piece.getChessType();
+        } else {
+            throw new EmptyCellException();
+        }
     }
 
     @Override
     public ChessColor getPieceColor(ChessPosition p) throws EmptyCellException, OutOfBoardException {
-        return ChessColor.CLR_WHITE;
+        checkPosition(p);
+        Piece piece = gameBoard.getPiece(p);
+        if (piece != null) {
+            return piece.getChessColor();
+        } else {
+            throw new EmptyCellException();
+        }
     }
 
     @Override
@@ -73,6 +83,14 @@ public class ChessModel implements IChess{
     @Override
     public long getPlayerDuration(ChessColor color, boolean isPlaying) {
         return 0;
+    }
+
+    private void checkPosition(ChessPosition p) throws OutOfBoardException {
+        if (p.x < 0 || p.x > 7) {
+            throw new OutOfBoardException();
+        } else if (p.y < 0 || p.y > 7) {
+            throw new OutOfBoardException();
+        }
     }
 
 }
