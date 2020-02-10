@@ -52,7 +52,16 @@ public class ChessModel implements IChess {
 
     @Override
     public int getNbRemainingPieces(ChessColor color) {
-        return 0;
+        int nb = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (getPieces(i, j) != null) {
+                    if (getPieces(i, j).getChessColor() == color)
+                        nb++;
+                }
+            }
+        }
+        return nb;
     }
 
     @Override
@@ -93,4 +102,8 @@ public class ChessModel implements IChess {
         }
     }
 
+    public Piece getPieces(int x, int y) {
+        ChessPosition chessPosition = new ChessPosition(x, y);
+        return gameBoard.getPiece(chessPosition);
+    }
 }
