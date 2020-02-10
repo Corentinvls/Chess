@@ -6,6 +6,7 @@ fr/rphstudio/chess/launcher/ChessFontManager.class
 fr/rphstudio/chess/interf/IChess.class
 fr/rphstudio/chess/launcher/MainLauncher.class
 fr/rphstudio/chess/interf/IChess$ChessPosition.class
+fr/rphstudio/chess/game/Piece.class
 fr/rphstudio/chess/interf/IChess$ChessType.class
 fr/rphstudio/chess/interf/ChessException.class
 fr/rphstudio/chess/launcher/ChessGameController.class

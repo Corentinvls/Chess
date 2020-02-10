@@ -5,15 +5,19 @@ import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChessModel implements IChess{
-
+    private GameBoard gameBoard ;
     private static final IChess instance = new ChessModel();
 
-    public ChessModel() {
+    private ChessModel() {
+        this.gameBoard = new GameBoard();
 
     }
+
+
 
     public static IChess getInstance() {
         return instance;
