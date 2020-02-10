@@ -20,15 +20,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-linux:2.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-windows:2.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-osx:2.0.5" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: javax.jnlp:jnlp-api:5.0">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/javax/jnlp/jnlp-api/5.0/jnlp-api-5.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: org.jcraft:jorbis:0.0.17" level="project" />
     <orderEntry type="library" name="Maven: org.dyn4j:dyn4j:3.2.3" level="project" />
   </component>
