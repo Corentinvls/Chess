@@ -71,11 +71,11 @@ public class GameBoard {
                         case 5:
                             type = IChess.ChessType.TYP_BISHOP;
                             break;
-                        case 3:
+                        case 4:
                             type = IChess.ChessType.TYP_KING;
                             break;
 
-                        case 4:
+                        case 3:
                             type = IChess.ChessType.TYP_QUEEN;
                             break;
 
@@ -83,10 +83,6 @@ public class GameBoard {
 
                 }
                 gameBoard[i][j] = new Piece(color, type);
-                //TODO
-                //gameBoard[7][1] = null;
-                //gameBoard[7][2] = null;
-                //gameBoard[6][0] = null;
             }
         }
 

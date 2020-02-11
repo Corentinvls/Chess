@@ -27,4 +27,8 @@ public class Utils {
         return false;
         }
     }
+   // public IChess.ChessPosition getKingPosition(IChess.ChessColor color) {
+
+
+    //}
 }

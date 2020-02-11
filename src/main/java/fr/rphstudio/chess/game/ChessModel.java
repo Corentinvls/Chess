@@ -113,21 +113,21 @@ public class ChessModel implements IChess {
     @Override
     public List<ChessPosition> getPieceMoves(ChessPosition p) {
 
-            Piece piece = gameBoard.getPiece(p);
+        Piece piece = gameBoard.getPiece(p);
 
-            List <ChessPosition> list =  piece.getMove(p,this.gameBoard);
-            for (int i = list.size() - 1; i >= 0; i--) {
-                if ((list.get(i).x < 0 || list.get(i).x > 7)||(list.get(i).y < 0 || list.get(i).y > 7)) {
-                    list.remove(list.get(i));
-                }
-            }
+        List<ChessPosition> list = piece.getMove(p, this.gameBoard);
         for (int i = list.size() - 1; i >= 0; i--) {
-            if(gameBoard.getPiece(list.get(i)) != null && gameBoard.getPiece(list.get(i)).getChessColor() == gameBoard.getPiece(p).getChessColor() ) {
+            if ((list.get(i).x < 0 || list.get(i).x > 7) || (list.get(i).y < 0 || list.get(i).y > 7)) {
+                list.remove(list.get(i));
+            }
+        }
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (gameBoard.getPiece(list.get(i)) != null && gameBoard.getPiece(list.get(i)).getChessColor() == gameBoard.getPiece(p).getChessColor()) {
                 list.remove(list.get(i));
             }
         }
 
-            return list;
+        return list;
     }
 
     /**
@@ -139,13 +139,13 @@ public class ChessModel implements IChess {
      */
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
-        gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount()+1);
-        gameBoard.setPiece(p1,gameBoard.getPiece(p0));
+        gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount() + 1);
+        gameBoard.setPiece(p1, gameBoard.getPiece(p0));
 
-        if(gameBoard.getPiece(p1).getChessType()== ChessType.TYP_PAWN && (p1.y==0 || p1.y==7)){
-            gameBoard.setPiece(p1,new Piece(gameBoard.getPiece(p1).getChessColor(),IChess.ChessType.TYP_QUEEN ));
+        if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
+            gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
         }
-        gameBoard.setPiece(p0,null);
+        gameBoard.setPiece(p0, null);
 
 
     }
