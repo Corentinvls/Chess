@@ -112,23 +112,17 @@ public class ChessModel implements IChess {
      */
     @Override
     public List<ChessPosition> getPieceMoves(ChessPosition p) {
-        try {
-            checkPosition(p);
 
             Piece piece = gameBoard.getPiece(p);
             List <ChessPosition> list =  piece.getMove(p,this.gameBoard);
-            for (ChessPosition a:list) {
-                if (a.x < 0 || a.x > 7) {
-                    list.remove(a);
-                } else if (a.y < 0 || a.y > 7) {
-                    list.remove(a);
+            for (int i = list.size() - 1; i >= 0; i--) {
+                if ((list.get(i).x < 0 || list.get(i).x > 7)||(list.get(i).y < 0 || list.get(i).y > 7)) {
+                    list.remove(list.get(i));
                 }
             }
+
             return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+
 
     }
 
