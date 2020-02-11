@@ -18,7 +18,7 @@ public class Queen implements IMove {
     public List<IChess.ChessPosition> getPossibleMoves(IChess.ChessPosition p, GameBoard gameBoard) {
 
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
-        IChess.ChessPosition position = new IChess.ChessPosition(p.x - 1, p.y - 1);
+        IChess.ChessPosition position = new IChess.ChessPosition(4, 4);
         list.add(position);
         return list;
     }

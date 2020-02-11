@@ -1,7 +1,6 @@
 package fr.rphstudio.chess.game;
 
-import fr.rphstudio.chess.game.moves.Pawn;
-import fr.rphstudio.chess.game.moves.Queen;
+import fr.rphstudio.chess.game.moves.*;
 import fr.rphstudio.chess.interf.IChess.*;
 
 import java.util.List;
@@ -38,7 +37,29 @@ public class Piece {
 
         this.chessColor=chessColor;
         this.chessType=chessType;
-        this.move=new Pawn();
+        switch (chessType){
+            case TYP_BISHOP:
+                this.move=new Bishop();
+                break;
+            case TYP_PAWN:
+                this.move=new Pawn();
+                break;
+            case TYP_KNIGHT:
+                this.move=new Knight();
+                break;
+            case TYP_ROOK:
+                this.move=new Rook();
+                break;
+            case TYP_KING:
+                this.move=new King();
+                break;
+            case TYP_QUEEN:
+                this.move=new Queen();
+                break;
+
+        }
+
+
 
     }
 
