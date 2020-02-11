@@ -19,34 +19,58 @@ public class Queen implements IMove {
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
         for (int X = 1; X < 8; X++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x + X, p.y);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int Y = 1; Y < 8; Y++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x, p.y + Y);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int X = 1; X < 8; X++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x - X, p.y);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int Y = 1; Y < 8; Y++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x, p.y - Y);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y + i);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y - i);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y - i);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y + i);
+            if(gameBoard.getPiece(p)!= null){
+                break;
+            }
             list.add(position);
         }
         return list;

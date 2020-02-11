@@ -121,6 +121,11 @@ public class ChessModel implements IChess {
                     list.remove(list.get(i));
                 }
             }
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if(gameBoard.getPiece(list.get(i)) != null && gameBoard.getPiece(list.get(i)).getChessColor() == gameBoard.getPiece(p).getChessColor() ) {
+                list.remove(list.get(i));
+            }
+        }
 
             return list;
     }

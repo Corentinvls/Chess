@@ -30,15 +30,18 @@ public class King implements IMove {
         IChess.ChessPosition position7 = new IChess.ChessPosition(p.x + 1, p.y);
         IChess.ChessPosition position8 = new IChess.ChessPosition(p.x + 1, p.y + 1);
 
-        list.add(position);
-        list.add(position1);
-        list.add(position2);
-        list.add(position3);
-        list.add(position4);
-        list.add(position5);
-        list.add(position6);
-        list.add(position7);
-        list.add(position8);
+
+            list.add(position);
+            list.add(position1);
+            list.add(position2);
+            list.add(position3);
+            list.add(position4);
+            list.add(position5);
+            list.add(position6);
+            list.add(position7);
+            list.add(position8);
+
+
 
         return list;
     }

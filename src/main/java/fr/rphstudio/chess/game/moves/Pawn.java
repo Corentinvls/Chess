@@ -34,20 +34,25 @@ public class Pawn implements IMove {
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
         int var = 1;
 
-        if(gameBoard.getPiece(p).getChessColor() == IChess.ChessColor.CLR_WHITE){
-            var*=-1;
+        if (gameBoard.getPiece(p).getChessColor() == IChess.ChessColor.CLR_WHITE) {
+            var *= -1;
         }
 
         IChess.ChessPosition position = new IChess.ChessPosition(p.x, p.y + var);
+
         list.add(position);
 
-        if(!isMoved()){
+
+        if (!isMoved()) {
             var *= 2;
-            position = new IChess.ChessPosition(p.x,p.y+var);
-            list.add(position);
+            IChess.ChessPosition position2 = new IChess.ChessPosition(p.x, p.y + var);
+            if(gameBoard.getPiece(position)== null){
+            list.add(position2);
+            }
+
         }
 
-       return list;
+        return list;
     }
 
 }
