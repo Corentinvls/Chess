@@ -2,6 +2,7 @@ package fr.rphstudio.chess.game.moves;
 
 import fr.rphstudio.chess.game.GameBoard;
 import fr.rphstudio.chess.game.IMove;
+import fr.rphstudio.chess.game.Utils;
 import fr.rphstudio.chess.interf.IChess;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Bishop implements IMove {
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y + i);
-            if(gameBoard.getPiece(position)!= null){
+            if(!Utils.isEmpty(position,gameBoard)){
                 list.add(position);
                 break;
             }
@@ -26,7 +27,7 @@ public class Bishop implements IMove {
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y - i);
-            if(gameBoard.getPiece(position)!= null){
+            if(!Utils.isEmpty(position,gameBoard)){
                 list.add(position);
                 break;
             }
@@ -34,7 +35,7 @@ public class Bishop implements IMove {
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y - i);
-            if(gameBoard.getPiece(position)!= null){
+            if(!Utils.isEmpty(position,gameBoard)){
                 list.add(position);
                 break;
             }
@@ -42,7 +43,7 @@ public class Bishop implements IMove {
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y + i);
-            if(gameBoard.getPiece(position)!= null){
+            if(!Utils.isEmpty(position,gameBoard)){
                 list.add(position);
                 break;
             }

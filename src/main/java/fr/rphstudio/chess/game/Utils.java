@@ -27,6 +27,9 @@ public class Utils {
         return false;
         }
     }
+    public static boolean isOutofBound(IChess.ChessPosition p){
+        return ((p.x < 0 || p.x > 7) || p.y < 0 || p.y > 7);
+    }
    // public IChess.ChessPosition getKingPosition(IChess.ChessColor color) {
 
 

@@ -117,12 +117,12 @@ public class ChessModel implements IChess {
 
         List<ChessPosition> list = piece.getMove(p, this.gameBoard);
         for (int i = list.size() - 1; i >= 0; i--) {
-            if ((list.get(i).x < 0 || list.get(i).x > 7) || (list.get(i).y < 0 || list.get(i).y > 7)) {
+            if (Utils.isOutofBound(list.get(i))) {
                 list.remove(list.get(i));
             }
         }
         for (int i = list.size() - 1; i >= 0; i--) {
-            if (gameBoard.getPiece(list.get(i)) != null && gameBoard.getPiece(list.get(i)).getChessColor() == gameBoard.getPiece(p).getChessColor()) {
+            if (!Utils.isEmpty(list.get(i),gameBoard) && !Utils.isEnemy(p,list.get(i),gameBoard)) {
                 list.remove(list.get(i));
             }
         }

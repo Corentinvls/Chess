@@ -96,14 +96,11 @@ public class GameBoard {
      * @return type's chess piece.
      */
     public Piece getPiece(IChess.ChessPosition p) {
-        try {
-            Utils.checkPosition(p);
-            return gameBoard[p.y][p.x];
-        } catch (OutOfBoardException e) {
-            e.printStackTrace();
-            return null;
-        }
 
+            if(!Utils.isOutofBound(p))
+            return gameBoard[p.y][p.x];
+            else
+            return null;
 
     }
 
