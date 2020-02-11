@@ -1,5 +1,12 @@
 package fr.rphstudio.chess.game.moves;
 
+/**
+ * Class used for mouvement's  Queen.
+ *
+ * @author Team KING
+ */
+public class Queen {
+}
 import fr.rphstudio.chess.game.GameBoard;
 import fr.rphstudio.chess.game.IMove;
 import fr.rphstudio.chess.interf.IChess;
@@ -16,5 +23,3 @@ public class Queen implements IMove {
         list.add(position);
         return list;
     }
-
-}

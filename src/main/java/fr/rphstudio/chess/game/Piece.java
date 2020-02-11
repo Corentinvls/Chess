@@ -6,14 +6,35 @@ import fr.rphstudio.chess.interf.IChess.*;
 
 import java.util.List;
 
+/**
+ * Class used to define chess pieces.
+ *
+ * @author Team KING
+ */
 public class Piece {
 
+    /**
+     * Private field intance's move.
+     */
     private IMove move;
-    private ChessColor chessColor;
-    private ChessType chessType;
 
+    /**
+     * Private field containing the color's chess piece.
+     */
+    private IChess.ChessColor chessColor;
 
-    public Piece(ChessColor chessColor, ChessType chessType) {
+    /**
+     * Private field containing the type's chess piece.
+     */
+    private IChess.ChessType chessType;
+
+    /**
+     * Constructor's Piece.
+     *
+     * @param chessColor color's piece.
+     * @param chessType  type's piece.
+     */
+    public Piece(IChess.ChessColor chessColor, IChess.ChessType chessType) {
 
         this.chessColor=chessColor;
         this.chessType=chessType;
@@ -21,20 +42,40 @@ public class Piece {
 
     }
 
-    public ChessColor getChessColor() {
+    /**
+     * Geter's color of chess piece.
+     *
+     * @return color's chess piece.
+     */
+    public IChess.ChessColor getChessColor() {
         return chessColor;
     }
 
-    public Piece setChessColor(ChessColor chessColor) {
+    /**
+     * Seter's color of chess piece.
+     *
+     * @return color's chess piece.
+     */
+    public Piece setChessColor(IChess.ChessColor chessColor) {
         this.chessColor = chessColor;
         return this;
     }
 
-    public ChessType getChessType() {
+    /**
+     * Geter's type of chess piece.
+     *
+     * @return type's chess piece.
+     */
+    public IChess.ChessType getChessType() {
         return chessType;
     }
 
-    public Piece setChessType(ChessType chessType) {
+    /**
+     * Seter's type of chess piece.
+     *
+     * @return type's chess piece.
+     */
+    public Piece setChessType(IChess.ChessType chessType) {
         this.chessType = chessType;
         return this;
     }
