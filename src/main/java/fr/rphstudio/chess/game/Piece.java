@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Piece {
 
+    private int movesCount;
     /**
      * Private field intance's move.
      */
@@ -58,6 +59,7 @@ public class Piece {
                 break;
 
         }
+        this.movesCount = 0;
 
 
     }
@@ -102,5 +104,17 @@ public class Piece {
 
     public List<ChessPosition> getMove(ChessPosition p, GameBoard gameBoard) {
         return move.getPossibleMoves(p, gameBoard);
+    }
+    public  boolean asMoved(){
+        return this.movesCount>0 ;
+    }
+
+    public Piece setMovesCount(int movesCount) {
+        this.movesCount = movesCount;
+        return this;
+    }
+
+    public int getMovesCount() {
+        return movesCount;
     }
 }

@@ -3,6 +3,7 @@ package fr.rphstudio.chess.game.moves;
 
 import fr.rphstudio.chess.game.GameBoard;
 import fr.rphstudio.chess.game.IMove;
+import fr.rphstudio.chess.game.Piece;
 import fr.rphstudio.chess.game.Utils;
 import fr.rphstudio.chess.interf.IChess;
 
@@ -15,20 +16,6 @@ import java.util.List;
  * @author Team KING
  */
 public class Pawn implements IMove {
-    private boolean moved;
-
-    public Pawn() {
-        this.moved = false;
-    }
-
-    public boolean isMoved() {
-        return moved;
-    }
-
-    public Pawn setMoved(boolean moved) {
-        this.moved = moved;
-        return this;
-    }
 
     @Override
     public List<IChess.ChessPosition> getPossibleMoves(IChess.ChessPosition p, GameBoard gameBoard) {
@@ -46,11 +33,16 @@ public class Pawn implements IMove {
 
         IChess.ChessPosition positionAtk = new IChess.ChessPosition(p.x-1, p.y +var);
         IChess.ChessPosition positionAtk2 = new IChess.ChessPosition(p.x+1, p.y +var);
-        if(!Utils.isEmpty(position,gameBoard) && Utils.isEnemy(p,positionAtk,gameBoard))
+
+        if(!Utils.isEmpty(positionAtk,gameBoard) && Utils.isEnemy(p,positionAtk,gameBoard)){
+            list.add(positionAtk);
+        }
+        if(!Utils.isEmpty(positionAtk2,gameBoard) && Utils.isEnemy(p,positionAtk2,gameBoard)){
+            list.add(positionAtk2);
+        }
 
 
-
-        if (!isMoved()) {
+        if (!gameBoard.getPiece(p).asMoved()) {
             var *= 2;
             IChess.ChessPosition position2 = new IChess.ChessPosition(p.x, p.y + var);
             if (Utils.isEmpty(position,gameBoard)) {

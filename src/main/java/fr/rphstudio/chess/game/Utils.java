@@ -21,6 +21,10 @@ public class Utils {
         return gameBoard.getPiece(p) == null;
     }
     public static boolean isEnemy (IChess.ChessPosition currentPosition, IChess.ChessPosition targetPosition,GameBoard gameBoard){
-        return gameBoard.getPiece(currentPosition).getChessColor() != gameBoard.getPiece(targetPosition).getChessColor();
+        if(!isEmpty(targetPosition,gameBoard)) {
+            return gameBoard.getPiece(currentPosition).getChessColor() != gameBoard.getPiece(targetPosition).getChessColor();
+        }else{
+        return false;
+        }
     }
 }

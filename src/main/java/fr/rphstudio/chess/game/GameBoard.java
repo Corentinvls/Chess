@@ -111,4 +111,8 @@ public class GameBoard {
 
     }
 
+    public GameBoard setPiece(IChess.ChessPosition p,Piece piece) {
+        this.gameBoard[p.y][p.x] = piece;
+        return this;
+    }
 }

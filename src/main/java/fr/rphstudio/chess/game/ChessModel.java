@@ -139,6 +139,9 @@ public class ChessModel implements IChess {
      */
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
+        gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount()+1);
+        gameBoard.setPiece(p1,gameBoard.getPiece(p0));
+        gameBoard.setPiece(p0,null);
 
     }
 
