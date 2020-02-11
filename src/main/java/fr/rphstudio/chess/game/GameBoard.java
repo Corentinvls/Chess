@@ -1,6 +1,7 @@
 package fr.rphstudio.chess.game;
 
 import fr.rphstudio.chess.interf.IChess;
+import fr.rphstudio.chess.interf.OutOfBoardException;
 
 import java.util.Arrays;
 
@@ -82,6 +83,10 @@ public class GameBoard {
 
                 }
                 gameBoard[i][j] = new Piece(color, type);
+                //TODO
+                //gameBoard[7][1] = null;
+                //gameBoard[7][2] = null;
+                //gameBoard[6][0] = null;
             }
         }
 
@@ -95,7 +100,15 @@ public class GameBoard {
      * @return type's chess piece.
      */
     public Piece getPiece(IChess.ChessPosition p) {
-        return gameBoard[p.y][p.x];
+        try {
+            Utils.checkPosition(p);
+            return gameBoard[p.y][p.x];
+        } catch (OutOfBoardException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 
 }

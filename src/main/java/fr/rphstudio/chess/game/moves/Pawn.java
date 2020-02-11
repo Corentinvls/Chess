@@ -3,6 +3,7 @@ package fr.rphstudio.chess.game.moves;
 
 import fr.rphstudio.chess.game.GameBoard;
 import fr.rphstudio.chess.game.IMove;
+import fr.rphstudio.chess.game.Utils;
 import fr.rphstudio.chess.interf.IChess;
 
 import java.util.ArrayList;
@@ -39,18 +40,25 @@ public class Pawn implements IMove {
         }
 
         IChess.ChessPosition position = new IChess.ChessPosition(p.x, p.y + var);
+        if (Utils.isEmpty(position,gameBoard)) {
+            list.add(position);
+        }
 
-        list.add(position);
+        IChess.ChessPosition positionAtk = new IChess.ChessPosition(p.x-1, p.y +var);
+        IChess.ChessPosition positionAtk2 = new IChess.ChessPosition(p.x+1, p.y +var);
+        if(!Utils.isEmpty(position,gameBoard) && Utils.isEnemy(p,positionAtk,gameBoard))
+
 
 
         if (!isMoved()) {
             var *= 2;
             IChess.ChessPosition position2 = new IChess.ChessPosition(p.x, p.y + var);
-            if(gameBoard.getPiece(position)== null){
-            list.add(position2);
+            if (Utils.isEmpty(position,gameBoard)) {
+                list.add(position2);
             }
 
         }
+
 
         return list;
     }

@@ -2,6 +2,7 @@ package fr.rphstudio.chess.game.moves;
 
 import fr.rphstudio.chess.game.GameBoard;
 import fr.rphstudio.chess.game.IMove;
+import fr.rphstudio.chess.game.Piece;
 import fr.rphstudio.chess.interf.IChess;
 
 import java.util.ArrayList;
@@ -18,29 +19,36 @@ public class Rook implements IMove {
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y);
-            if(gameBoard.getPiece(p)!= null){
+            if(gameBoard.getPiece(position)!= null){
+                list.add(position);
                 break;
             }
             list.add(position);
+
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x, p.y + i);
-            if(gameBoard.getPiece(p)!= null){
+            if(gameBoard.getPiece(position)!= null){
+                list.add(position);
                 break;
+
+
             }
             list.add(position);
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y);
-            if(gameBoard.getPiece(p)!= null){
-                break;
+            if(gameBoard.getPiece(position)!= null){
+               list.add(position);
+               break;
             }
             list.add(position);
         }
         for (int i = 1; i < 8; i++) {
             IChess.ChessPosition position = new IChess.ChessPosition(p.x, p.y - i);
-            if(gameBoard.getPiece(p)!= null){
-                break;
+            if(gameBoard.getPiece(position)!= null){
+              list.add(position);
+               break;
             }
             list.add(position);
         }
