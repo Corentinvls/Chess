@@ -116,7 +116,15 @@ public class ChessModel implements IChess {
             checkPosition(p);
 
             Piece piece = gameBoard.getPiece(p);
-            return piece.getMove(p,this.gameBoard);
+            List <ChessPosition> list =  piece.getMove(p,this.gameBoard);
+            for (ChessPosition a:list) {
+                if (a.x < 0 || a.x > 7) {
+                    list.remove(a);
+                } else if (a.y < 0 || a.y > 7) {
+                    list.remove(a);
+                }
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -185,7 +193,7 @@ public class ChessModel implements IChess {
      * @param p position of the chess piece.
      * @return if the chess piece is in the chessboard or not.
      */
-    private void checkPosition(ChessPosition p) throws OutOfBoardException {
+    public void checkPosition(ChessPosition p) throws OutOfBoardException {
         if (p.x < 0 || p.x > 7) {
             throw new OutOfBoardException();
         } else if (p.y < 0 || p.y > 7) {
