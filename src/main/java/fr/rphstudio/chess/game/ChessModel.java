@@ -141,7 +141,12 @@ public class ChessModel implements IChess {
     public void movePiece(ChessPosition p0, ChessPosition p1) {
         gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount()+1);
         gameBoard.setPiece(p1,gameBoard.getPiece(p0));
+
+        if(gameBoard.getPiece(p1).getChessType()== ChessType.TYP_PAWN && (p1.y==0 || p1.y==7)){
+            gameBoard.setPiece(p1,new Piece(gameBoard.getPiece(p1).getChessColor(),IChess.ChessType.TYP_QUEEN ));
+        }
         gameBoard.setPiece(p0,null);
+
 
     }
 
