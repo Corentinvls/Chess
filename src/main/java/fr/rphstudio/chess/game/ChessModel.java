@@ -116,7 +116,7 @@ public class ChessModel implements IChess {
             checkPosition(p);
 
             Piece piece = gameBoard.getPiece(p);
-            return piece.getMove(p,this.gameBoard);
+            return piece.getMove(p, this.gameBoard);
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();

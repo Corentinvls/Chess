@@ -35,30 +35,29 @@ public class Piece {
      */
     public Piece(ChessColor chessColor, ChessType chessType) {
 
-        this.chessColor=chessColor;
-        this.chessType=chessType;
-        switch (chessType){
+        this.chessColor = chessColor;
+        this.chessType = chessType;
+        switch (chessType) {
             case TYP_BISHOP:
-                this.move=new Bishop();
+                this.move = new Bishop();
                 break;
             case TYP_PAWN:
-                this.move=new Pawn();
+                this.move = new Pawn();
                 break;
             case TYP_KNIGHT:
-                this.move=new Knight();
+                this.move = new Knight();
                 break;
             case TYP_ROOK:
-                this.move=new Rook();
+                this.move = new Rook();
                 break;
             case TYP_KING:
-                this.move=new King();
+                this.move = new King();
                 break;
             case TYP_QUEEN:
-                this.move=new Queen();
+                this.move = new Queen();
                 break;
 
         }
-
 
 
     }
@@ -101,7 +100,7 @@ public class Piece {
         return this;
     }
 
-    public List<ChessPosition> getMove(ChessPosition p , GameBoard gameBoard) {
-        return move.getPossibleMoves(p,gameBoard);
+    public List<ChessPosition> getMove(ChessPosition p, GameBoard gameBoard) {
+        return move.getPossibleMoves(p, gameBoard);
     }
 }

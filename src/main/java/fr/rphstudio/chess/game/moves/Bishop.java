@@ -15,10 +15,23 @@ import java.util.List;
 public class Bishop implements IMove {
     @Override
     public List<IChess.ChessPosition> getPossibleMoves(IChess.ChessPosition p, GameBoard gameBoard) {
-
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
-        IChess.ChessPosition position = new IChess.ChessPosition(4, 4);
-        list.add(position);
+        for (int i = 1; i < 8; i++) {
+            IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y + i);
+            list.add(position);
+        }
+        for (int i = 1; i < 8; i++) {
+            IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y - i);
+            list.add(position);
+        }
+        for (int i = 1; i < 8; i++) {
+            IChess.ChessPosition position = new IChess.ChessPosition(p.x + i, p.y - i);
+            list.add(position);
+        }
+        for (int i = 1; i < 8; i++) {
+            IChess.ChessPosition position = new IChess.ChessPosition(p.x - i, p.y + i);
+            list.add(position);
+        }
         return list;
     }
 }

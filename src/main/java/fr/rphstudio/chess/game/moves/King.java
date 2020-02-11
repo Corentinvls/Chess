@@ -17,8 +17,30 @@ public class King implements IMove {
     public List<IChess.ChessPosition> getPossibleMoves(IChess.ChessPosition p, GameBoard gameBoard) {
 
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
-        IChess.ChessPosition position = new IChess.ChessPosition(4, 4);
+
+        IChess.ChessPosition position = new IChess.ChessPosition(p.x - 1, p.y - 1);
+        IChess.ChessPosition position1 = new IChess.ChessPosition(p.x - 1, p.y);
+        IChess.ChessPosition position2 = new IChess.ChessPosition(p.x - 1, p.y + 1);
+
+        IChess.ChessPosition position3 = new IChess.ChessPosition(p.x, p.y - 1);
+        IChess.ChessPosition position4 = new IChess.ChessPosition(p.x, p.y);
+        IChess.ChessPosition position5 = new IChess.ChessPosition(p.x, p.y + 1);
+
+        IChess.ChessPosition position6 = new IChess.ChessPosition(p.x + 1, p.y - 1);
+        IChess.ChessPosition position7 = new IChess.ChessPosition(p.x + 1, p.y);
+        IChess.ChessPosition position8 = new IChess.ChessPosition(p.x + 1, p.y + 1);
+
         list.add(position);
+        list.add(position1);
+        list.add(position2);
+        list.add(position3);
+        list.add(position4);
+        list.add(position5);
+        list.add(position6);
+        list.add(position7);
+        list.add(position8);
+
         return list;
     }
 }
+
