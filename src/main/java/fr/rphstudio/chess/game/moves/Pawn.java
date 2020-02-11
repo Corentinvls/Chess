@@ -10,10 +10,10 @@ import java.util.List;
 
 public class Pawn implements IMove {
     @Override
-    public List<IChess.ChessPosition> getPieceMoves(IChess.ChessPosition p) {
+    public List<IChess.ChessPosition> getPossibleMoves(IChess.ChessPosition p, GameBoard gameBoard) {
 
         ArrayList<IChess.ChessPosition> list = new ArrayList<>();
-        IChess.ChessPosition position = new IChess.ChessPosition(p.x-1,p.y-1);
+        IChess.ChessPosition position = new IChess.ChessPosition(4,4);
        list.add(position);
        return list;
     }

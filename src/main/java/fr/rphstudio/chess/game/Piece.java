@@ -1,47 +1,45 @@
 package fr.rphstudio.chess.game;
 
 import fr.rphstudio.chess.game.moves.Pawn;
-import fr.rphstudio.chess.interf.IChess;
+import fr.rphstudio.chess.game.moves.Queen;
+import fr.rphstudio.chess.interf.IChess.*;
 
 import java.util.List;
 
 public class Piece {
 
     private IMove move;
-    private IChess.ChessColor chessColor;
-    private IChess.ChessType chessType;
+    private ChessColor chessColor;
+    private ChessType chessType;
 
 
-    public Piece(IChess.ChessColor chessColor, IChess.ChessType chessType) {
+    public Piece(ChessColor chessColor, ChessType chessType) {
 
         this.chessColor=chessColor;
         this.chessType=chessType;
         this.move=new Pawn();
-        this.move.getPieceMoves();
 
     }
 
-    public IChess.ChessColor getChessColor() {
+    public ChessColor getChessColor() {
         return chessColor;
     }
 
-    public Piece setChessColor(IChess.ChessColor chessColor) {
+    public Piece setChessColor(ChessColor chessColor) {
         this.chessColor = chessColor;
         return this;
     }
 
-    public IChess.ChessType getChessType() {
+    public ChessType getChessType() {
         return chessType;
     }
 
-    public Piece setChessType(IChess.ChessType chessType) {
+    public Piece setChessType(ChessType chessType) {
         this.chessType = chessType;
         return this;
     }
-    /*public IChess.ChessPosition getChessPosition(){
+
+    public List<ChessPosition> getMove(ChessPosition p , GameBoard gameBoard) {
+        return move.getPossibleMoves(p,gameBoard);
     }
-     */
-
-
-
 }
