@@ -76,4 +76,8 @@ public class GameBoard {
         return gameBoard[p.y][p.x];
     }
 
+    public GameBoard setGameBoard(Piece[][] gameBoard) {
+        this.gameBoard = gameBoard;
+        return this;
+    }
 }
