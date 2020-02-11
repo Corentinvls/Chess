@@ -21,12 +21,12 @@ public class Piece {
     /**
      * Private field containing the color's chess piece.
      */
-    private IChess.ChessColor chessColor;
+    private ChessColor chessColor;
 
     /**
      * Private field containing the type's chess piece.
      */
-    private IChess.ChessType chessType;
+    private ChessType chessType;
 
     /**
      * Constructor's Piece.
@@ -34,7 +34,7 @@ public class Piece {
      * @param chessColor color's piece.
      * @param chessType  type's piece.
      */
-    public Piece(IChess.ChessColor chessColor, IChess.ChessType chessType) {
+    public Piece(ChessColor chessColor, ChessType chessType) {
 
         this.chessColor=chessColor;
         this.chessType=chessType;
@@ -47,7 +47,7 @@ public class Piece {
      *
      * @return color's chess piece.
      */
-    public IChess.ChessColor getChessColor() {
+    public ChessColor getChessColor() {
         return chessColor;
     }
 
@@ -56,7 +56,7 @@ public class Piece {
      *
      * @return color's chess piece.
      */
-    public Piece setChessColor(IChess.ChessColor chessColor) {
+    public Piece setChessColor(ChessColor chessColor) {
         this.chessColor = chessColor;
         return this;
     }
@@ -66,7 +66,7 @@ public class Piece {
      *
      * @return type's chess piece.
      */
-    public IChess.ChessType getChessType() {
+    public ChessType getChessType() {
         return chessType;
     }
 
@@ -75,7 +75,7 @@ public class Piece {
      *
      * @return type's chess piece.
      */
-    public Piece setChessType(IChess.ChessType chessType) {
+    public Piece setChessType(ChessType chessType) {
         this.chessType = chessType;
         return this;
     }
