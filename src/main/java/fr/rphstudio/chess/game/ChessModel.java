@@ -146,29 +146,19 @@ public class ChessModel implements IChess {
         if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
             gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
         }
-        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING && p0.x == 4 && p1.x == p0.x + 2) {
+        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING) {
 
             ArrayList<IChess.ChessPosition> listRookPos = Utils.getRookPosAlly(p0, gameBoard);
 
             for (int i = 0; i <= listRookPos.size() - 1; i++) {
                 IChess.ChessPosition tempPos = listRookPos.get(i);
-                if (tempPos.x == 7) {
+                if (tempPos.x == 7 && p1.x == p0.x + 2) {
                     ChessPosition target = new ChessPosition(p1.x - 1, p1.y);
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
                     gameBoard.setPiece(tempPos, null);
                 }
-            }
-
-        }
-
-        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING && p0.x == 4 && p1.x == p0.x - 2) {
-
-            ArrayList<IChess.ChessPosition> listRookPos = Utils.getRookPosAlly(p0, gameBoard);
-
-            for (int i = 0; i <= listRookPos.size() - 1; i++) {
-                IChess.ChessPosition tempPos = listRookPos.get(i);
-                if (tempPos.x == 0) {
+                if (tempPos.x == 0 && p1.x == p0.x - 2) {
                     ChessPosition target = new ChessPosition(p1.x + 1, p1.y);
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
@@ -177,7 +167,6 @@ public class ChessModel implements IChess {
             }
 
         }
-
 
         gameBoard.setPiece(p0, null);
 

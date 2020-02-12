@@ -60,7 +60,7 @@ public class King implements IMove {
                             && Utils.isEmpty(positionL3, gameBoard)) {
                         list.add(positionL2);
                     }
-                    if (tempPos.x == 7 && Utils.isEmpty(positionR1, gameBoard) && Utils.isEmpty(positionR2, gameBoard)){
+                    if (tempPos.x == 7 && Utils.isEmpty(positionR1, gameBoard) && Utils.isEmpty(positionR2, gameBoard)) {
                         list.add(positionR2);
                     }
 
