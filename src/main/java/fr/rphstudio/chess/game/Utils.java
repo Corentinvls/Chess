@@ -20,8 +20,7 @@ public class Utils {
             throw new OutOfBoardException();
         }
     }
-
-    public static boolean isEmpty(IChess.ChessPosition p, GameBoard gameBoard) {
+    public static boolean isEmpty (IChess.ChessPosition p, GameBoard gameBoard ){
         return gameBoard.getPiece(p) == null;
     }
 
@@ -36,7 +35,21 @@ public class Utils {
     public static boolean isOutofBound(IChess.ChessPosition p) {
         return ((p.x < 0 || p.x > 7) || p.y < 0 || p.y > 7);
     }
-    // public IChess.ChessPosition getKingPosition(IChess.ChessColor color) {
+    public static IChess.ChessPosition getKingPosition(GameBoard gameBoard, IChess.ChessColor kingColor) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (!isEmpty(new IChess.ChessPosition(i, j), gameBoard)){
+                    IChess.ChessType type = gameBoard.getPiece(new IChess.ChessPosition(i, j)).getChessType();
+                    IChess.ChessColor color = gameBoard.getPiece(new IChess.ChessPosition(i, j)).getChessColor();
+                    if (type == IChess.ChessType.TYP_KING && color == kingColor) {
+                        return new IChess.ChessPosition(i, j);
+                    }
+                }
+
+            }
+        }
+        return new IChess.ChessPosition(-32,-32);
+    }
 
 
     //}
