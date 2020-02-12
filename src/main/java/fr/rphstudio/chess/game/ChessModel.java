@@ -142,22 +142,25 @@ public class ChessModel implements IChess {
     public void movePiece(ChessPosition p0, ChessPosition p1) {
         gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount() + 1);
         gameBoard.setPiece(p1, gameBoard.getPiece(p0));
-
+        //transfore pion en dame
         if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
             gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
         }
+        //section roque
         if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING) {
 
             ArrayList<IChess.ChessPosition> listRookPos = Utils.getRookPosAlly(p0, gameBoard);
 
             for (int i = 0; i <= listRookPos.size() - 1; i++) {
                 IChess.ChessPosition tempPos = listRookPos.get(i);
+                //petit roque
                 if (tempPos.x == 7 && p1.x == p0.x + 2) {
                     ChessPosition target = new ChessPosition(p1.x - 1, p1.y);
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
                     gameBoard.setPiece(tempPos, null);
                 }
+                //grand roque
                 if (tempPos.x == 0 && p1.x == p0.x - 2) {
                     ChessPosition target = new ChessPosition(p1.x + 1, p1.y);
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
