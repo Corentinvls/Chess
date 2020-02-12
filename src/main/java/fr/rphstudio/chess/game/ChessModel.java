@@ -1,15 +1,11 @@
 package fr.rphstudio.chess.game;
 
-import fr.rphstudio.chess.game.moves.King;
-import fr.rphstudio.chess.interf.ChessException;
 import fr.rphstudio.chess.interf.EmptyCellException;
 import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -121,7 +117,7 @@ public class ChessModel implements IChess {
 
         List<ChessPosition> list = piece.getMove(p, this.gameBoard);
         for (int i = list.size() - 1; i >= 0; i--) {
-            if (Utils.isOutofBound(list.get(i))) {
+            if (Utils.isOutOfBound(list.get(i))) {
                 list.remove(list.get(i));
             }
         }
@@ -130,6 +126,27 @@ public class ChessModel implements IChess {
                 list.remove(list.get(i));
             }
         }
+        // save KING
+        for (int i = list.size() - 1; i >= 0; i--) {
+            Piece pieceTemp = null;
+            ChessPosition pTemp = list.get(i);
+            if(!Utils.isEmpty(pTemp,gameBoard)){
+                pieceTemp = gameBoard.getPiece(pTemp);
+            }
+            movePiece(p, pTemp);
+
+            if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
+                list.remove(list.get(i));
+
+            }
+            movePiece(pTemp, p);
+            if(pieceTemp != null){
+                gameBoard.setPiece(pTemp,pieceTemp);
+            }
+            gameBoard.getPiece(p).setMovesCount(gameBoard.getPiece(p).getMovesCount() - 2);
+
+        }
+
 
         return list;
     }
@@ -188,24 +205,10 @@ public class ChessModel implements IChess {
     @Override
     public ChessKingState getKingState(ChessColor color) {
 
-        List<ChessPosition> list = new ArrayList<>();
 
         ChessPosition kingPos = Utils.getKingPosition(gameBoard, color);
+        List<ChessPosition> list = Utils.enemyMovement(color, gameBoard);
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-
-                ChessPosition currentPosition = new ChessPosition(i, j);
-
-                Piece currentPiece = gameBoard.getPiece(currentPosition);
-
-                if (currentPiece != null) {
-                    if (color != currentPiece.getChessColor()) {
-                        list.addAll(currentPiece.getMove(currentPosition, gameBoard));
-                    }
-                }
-            }
-        }
         for (ChessPosition p : list) {
             if (kingPos.equals(p)) {
                 return ChessKingState.KING_THREATEN;

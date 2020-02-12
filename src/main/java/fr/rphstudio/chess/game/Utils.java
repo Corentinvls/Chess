@@ -32,17 +32,19 @@ public class Utils {
         }
     }
 
-    public static boolean isOutofBound(IChess.ChessPosition p) {
+    public static boolean isOutOfBound(IChess.ChessPosition p) {
         return ((p.x < 0 || p.x > 7) || p.y < 0 || p.y > 7);
     }
     public static IChess.ChessPosition getKingPosition(GameBoard gameBoard, IChess.ChessColor kingColor) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (!isEmpty(new IChess.ChessPosition(i, j), gameBoard)){
-                    IChess.ChessType type = gameBoard.getPiece(new IChess.ChessPosition(i, j)).getChessType();
-                    IChess.ChessColor color = gameBoard.getPiece(new IChess.ChessPosition(i, j)).getChessColor();
+                IChess.ChessPosition position = new IChess.ChessPosition(i,j);
+                if (!isEmpty(position, gameBoard)){
+
+                    IChess.ChessType type = gameBoard.getPiece(position).getChessType();
+                    IChess.ChessColor color = gameBoard.getPiece(position).getChessColor();
                     if (type == IChess.ChessType.TYP_KING && color == kingColor) {
-                        return new IChess.ChessPosition(i, j);
+                        return position;
                     }
                 }
 
@@ -82,5 +84,44 @@ public class Utils {
             }
         }
         return listRook;
+    }
+
+    public static List<IChess.ChessPosition> enemyMovement(IChess.ChessColor color, GameBoard gameBoard) {
+        List<IChess.ChessPosition> list = new ArrayList<>();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                IChess.ChessPosition currentPosition = new IChess.ChessPosition(i, j);
+
+                Piece currentPiece = gameBoard.getPiece(currentPosition);
+
+                if (currentPiece != null) {
+                    if (color != currentPiece.getChessColor()) {
+                        list.addAll(currentPiece.getMove(currentPosition, gameBoard));
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    public static List<IChess.ChessPosition> allieMovement(IChess.ChessColor color, GameBoard gameBoard) {
+        List<IChess.ChessPosition> list = new ArrayList<>();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                IChess.ChessPosition currentPosition = new IChess.ChessPosition(i, j);
+
+                Piece currentPiece = gameBoard.getPiece(currentPosition);
+
+                if (currentPiece != null) {
+                    if (color == currentPiece.getChessColor()) {
+                        list.addAll(currentPiece.getMove(currentPosition, gameBoard));
+                    }
+                }
+            }
+        }
+        return list;
     }
 }

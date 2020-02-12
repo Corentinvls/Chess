@@ -1,9 +1,6 @@
 package fr.rphstudio.chess.game;
 
 import fr.rphstudio.chess.interf.IChess;
-import fr.rphstudio.chess.interf.OutOfBoardException;
-
-import java.util.Arrays;
 
 /**
  * Class used to created the chessboard.
@@ -97,7 +94,7 @@ public class GameBoard {
      */
     public Piece getPiece(IChess.ChessPosition p) {
 
-            if(!Utils.isOutofBound(p))
+            if(!Utils.isOutOfBound(p))
             return gameBoard[p.y][p.x];
             else
             return null;
