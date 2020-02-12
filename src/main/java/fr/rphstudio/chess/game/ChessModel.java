@@ -1,9 +1,12 @@
 package fr.rphstudio.chess.game;
 
+import fr.rphstudio.chess.interf.ChessException;
 import fr.rphstudio.chess.interf.EmptyCellException;
 import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -105,7 +108,7 @@ public class ChessModel implements IChess {
     }
 
     /**
-     * Method used to knom the moves a chess piece.
+     * Method used to know the moves a chess piece.
      *
      * @param p position's chess piece.
      * @return the list of possible movements of a chess piece.
@@ -122,7 +125,7 @@ public class ChessModel implements IChess {
             }
         }
         for (int i = list.size() - 1; i >= 0; i--) {
-            if (!Utils.isEmpty(list.get(i),gameBoard) && !Utils.isEnemy(p,list.get(i),gameBoard)) {
+            if (!Utils.isEmpty(list.get(i), gameBoard) && !Utils.isEnemy(p, list.get(i), gameBoard)) {
                 list.remove(list.get(i));
             }
         }
@@ -158,6 +161,30 @@ public class ChessModel implements IChess {
      */
     @Override
     public ChessKingState getKingState(ChessColor color) {
+
+        List<ChessPosition> list = new ArrayList<>();
+
+        ChessPosition kingPos = Utils.getKingPosition(gameBoard, color);
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                ChessPosition currentPosition = new ChessPosition(i, j);
+
+                Piece currentPiece = gameBoard.getPiece(currentPosition);
+
+                if (currentPiece != null) {
+                    if (color != currentPiece.getChessColor()) {
+                        list.addAll(currentPiece.getMove(currentPosition, gameBoard));
+                    }
+                }
+            }
+        }
+        for (ChessPosition p : list) {
+            if (kingPos.equals(p)) {
+                return ChessKingState.KING_THREATEN;
+            }
+        }
         return ChessKingState.KING_SAFE;
     }
 
