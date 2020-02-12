@@ -6,6 +6,8 @@ import fr.rphstudio.chess.interf.OutOfBoardException;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ public class ChessModel implements IChess {
      * Private field containing coordinates of chessboard.
      */
     private GameBoard gameBoard;
-
+    private List<GameBoard> allState;
     /**
      * Private field containing the only chessboard.
      */
@@ -30,6 +32,8 @@ public class ChessModel implements IChess {
      */
     private ChessModel() {
         this.gameBoard = new GameBoard();
+        this.allState=new ArrayList<GameBoard>() ;
+        allState.add(gameBoard);
 
     }
 
@@ -210,6 +214,13 @@ public class ChessModel implements IChess {
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
                     gameBoard.setPiece(tempPos, null);
+                    if(gameBoard.isTest()){
+                        gameBoard.setPiece(tempPos, gameBoard.getPiece(target));
+                        gameBoard.setPiece(target, null);
+                        gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() - 1);
+
+                    }
+
                 }
                 //grand roque
                 if (tempPos.x == 0 && p1.x == p0.x - 2) {
@@ -217,14 +228,21 @@ public class ChessModel implements IChess {
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
                     gameBoard.setPiece(tempPos, null);
+                    if(gameBoard.isTest()){
+                        gameBoard.setPiece(tempPos, gameBoard.getPiece(target));
+                        gameBoard.setPiece(target, null);
+                        gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() - 1);
+
+                    }
                 }
             }
 
         }
 
         gameBoard.setPiece(p0, null);
-
-
+        if(!gameBoard.isTest()){
+            allState.add(gameBoard);
+        }
     }
 
     /**
@@ -281,6 +299,15 @@ public class ChessModel implements IChess {
      */
     @Override
     public boolean undoLastMove() {
+        System.out.println("coucou je tente un undo "+ allState.size());
+        if(allState.size()>1){
+            System.out.println("la taille de  liste d'état est égal a "+ allState.size());
+        allState.remove(allState.size()-1);
+            System.out.println("apres mon remove liste d'état est égal a "+ allState.size());
+        gameBoard = allState.get(allState.size() - 1);
+        return true;
+        }
+        System.out.println("ma liste est trop petite");
         return false;
     }
 
@@ -307,5 +334,14 @@ public class ChessModel implements IChess {
     public Piece getPieces(int x, int y) {
         ChessPosition chessPosition = new ChessPosition(x, y);
         return gameBoard.getPiece(chessPosition);
+    }
+
+    public List<GameBoard> getAllState() {
+        return allState;
+    }
+
+    public ChessModel setAllState(List<GameBoard> allState) {
+        this.allState = allState;
+        return this;
     }
 }
