@@ -224,7 +224,35 @@ public class ChessModel implements IChess {
      */
     @Override
     public List<ChessType> getRemovedPieces(ChessColor color) {
-        return new ArrayList<>();
+        List<ChessType> listTemoin = new ArrayList<>();
+        listTemoin.add(ChessType.TYP_KING);
+        listTemoin.add(ChessType.TYP_QUEEN);
+        for(int i=0; i<2 ;i++){
+            listTemoin.add(ChessType.TYP_BISHOP);
+        }
+        for(int i=0; i<2 ;i++){
+            listTemoin.add(ChessType.TYP_KNIGHT);
+        }
+        for(int i=0; i<2 ;i++){
+            listTemoin.add(ChessType.TYP_ROOK);
+        }
+        for(int i=0; i<8 ;i++){
+            listTemoin.add(ChessType.TYP_PAWN);
+        }
+        List<ChessType> listFinal = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                ChessPosition position = new ChessPosition(i,j);
+                if(!Utils.isEmpty(position, gameBoard) && color == gameBoard.getPiece(position).getChessColor()){
+                    listFinal.add(gameBoard.getPiece(position).getChessType());
+
+                }
+            }
+        }
+        for (int k = listFinal.size() - 1; k >= 0; k--){
+            listTemoin.remove(listFinal.get(k));
+        }
+        return listTemoin;
     }
 
     /**
