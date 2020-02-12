@@ -3,6 +3,9 @@ package fr.rphstudio.chess.game;
 import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utils {
     /**
      * Method used to check the position's chess piece.
@@ -17,21 +20,54 @@ public class Utils {
             throw new OutOfBoardException();
         }
     }
-    public static boolean isEmpty (IChess.ChessPosition p, GameBoard gameBoard ){
+
+    public static boolean isEmpty(IChess.ChessPosition p, GameBoard gameBoard) {
         return gameBoard.getPiece(p) == null;
     }
-    public static boolean isEnemy (IChess.ChessPosition currentPosition, IChess.ChessPosition targetPosition,GameBoard gameBoard){
-        if(!isEmpty(targetPosition,gameBoard)) {
+
+    public static boolean isEnemy(IChess.ChessPosition currentPosition, IChess.ChessPosition targetPosition, GameBoard gameBoard) {
+        if (!isEmpty(targetPosition, gameBoard)) {
             return gameBoard.getPiece(currentPosition).getChessColor() != gameBoard.getPiece(targetPosition).getChessColor();
-        }else{
-        return false;
+        } else {
+            return false;
         }
     }
-    public static boolean isOutofBound(IChess.ChessPosition p){
+
+    public static boolean isOutofBound(IChess.ChessPosition p) {
         return ((p.x < 0 || p.x > 7) || p.y < 0 || p.y > 7);
     }
-   // public IChess.ChessPosition getKingPosition(IChess.ChessColor color) {
+    // public IChess.ChessPosition getKingPosition(IChess.ChessColor color) {
 
 
     //}
+    public static ArrayList<IChess.ChessPosition> getRookPosAlly(IChess.ChessPosition p, GameBoard gameBoard) {
+        IChess.ChessPosition positionBL = new IChess.ChessPosition(0, 0);
+        IChess.ChessPosition positionBR = new IChess.ChessPosition(7, 0);
+        IChess.ChessPosition positionWL = new IChess.ChessPosition(0, 7);
+        IChess.ChessPosition positionWR = new IChess.ChessPosition(7, 7);
+        ArrayList<IChess.ChessPosition> listRook = new ArrayList();
+
+        if (!isEmpty(positionBL, gameBoard)) {
+            if (!isEnemy(p, positionBL, gameBoard)) {
+                listRook.add(positionBL);
+
+            }
+        }
+        if (!isEmpty(positionWL, gameBoard)) {
+            if (!isEnemy(p, positionWL, gameBoard)) {
+                listRook.add(positionWL);
+            }
+        }
+        if (!isEmpty(positionBR, gameBoard)) {
+            if (!isEnemy(p, positionBR, gameBoard)) {
+                listRook.add(positionBR);
+            }
+        }
+        if (!isEmpty(positionWR, gameBoard)) {
+            if (!isEnemy(p, positionWR, gameBoard)) {
+                listRook.add(positionWR);
+            }
+        }
+        return listRook;
+    }
 }

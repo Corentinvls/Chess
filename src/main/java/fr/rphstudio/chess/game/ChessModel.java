@@ -1,5 +1,6 @@
 package fr.rphstudio.chess.game;
 
+import fr.rphstudio.chess.game.moves.King;
 import fr.rphstudio.chess.interf.EmptyCellException;
 import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
@@ -122,7 +123,7 @@ public class ChessModel implements IChess {
             }
         }
         for (int i = list.size() - 1; i >= 0; i--) {
-            if (!Utils.isEmpty(list.get(i),gameBoard) && !Utils.isEnemy(p,list.get(i),gameBoard)) {
+            if (!Utils.isEmpty(list.get(i), gameBoard) && !Utils.isEnemy(p, list.get(i), gameBoard)) {
                 list.remove(list.get(i));
             }
         }
@@ -145,6 +146,39 @@ public class ChessModel implements IChess {
         if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
             gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
         }
+        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING && p0.x == 4 && p1.x == p0.x + 2) {
+
+            ArrayList<IChess.ChessPosition> listRookPos = Utils.getRookPosAlly(p0, gameBoard);
+
+            for (int i = 0; i <= listRookPos.size() - 1; i++) {
+                IChess.ChessPosition tempPos = listRookPos.get(i);
+                if (tempPos.x == 7) {
+                    ChessPosition target = new ChessPosition(p1.x - 1, p1.y);
+                    gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
+                    gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
+                    gameBoard.setPiece(tempPos, null);
+                }
+            }
+
+        }
+
+        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING && p0.x == 4 && p1.x == p0.x - 2) {
+
+            ArrayList<IChess.ChessPosition> listRookPos = Utils.getRookPosAlly(p0, gameBoard);
+
+            for (int i = 0; i <= listRookPos.size() - 1; i++) {
+                IChess.ChessPosition tempPos = listRookPos.get(i);
+                if (tempPos.x == 0) {
+                    ChessPosition target = new ChessPosition(p1.x + 1, p1.y);
+                    gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
+                    gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
+                    gameBoard.setPiece(tempPos, null);
+                }
+            }
+
+        }
+
+
         gameBoard.setPiece(p0, null);
 
 
