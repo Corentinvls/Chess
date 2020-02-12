@@ -32,7 +32,7 @@ public class ChessModel implements IChess {
      */
     private ChessModel() {
         this.gameBoard = new GameBoard();
-        this.allState=new ArrayList<GameBoard>() ;
+        this.allState = new ArrayList<GameBoard>();
         allState.add(gameBoard);
 
     }
@@ -51,7 +51,7 @@ public class ChessModel implements IChess {
      */
     @Override
     public void reinit() {
-        this.gameBoard=new GameBoard();
+        this.gameBoard = new GameBoard();
     }
 
     /**
@@ -214,7 +214,7 @@ public class ChessModel implements IChess {
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
                     gameBoard.setPiece(tempPos, null);
-                    if(gameBoard.isTest()){
+                    if (gameBoard.isTest()) {
                         gameBoard.setPiece(tempPos, gameBoard.getPiece(target));
                         gameBoard.setPiece(target, null);
                         gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() - 1);
@@ -228,7 +228,7 @@ public class ChessModel implements IChess {
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
                     gameBoard.setPiece(target, gameBoard.getPiece(tempPos));
                     gameBoard.setPiece(tempPos, null);
-                    if(gameBoard.isTest()){
+                    if (gameBoard.isTest()) {
                         gameBoard.setPiece(tempPos, gameBoard.getPiece(target));
                         gameBoard.setPiece(target, null);
                         gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() - 1);
@@ -240,7 +240,7 @@ public class ChessModel implements IChess {
         }
 
         gameBoard.setPiece(p0, null);
-        if(!gameBoard.isTest()){
+        if (!gameBoard.isTest()) {
             allState.add(gameBoard);
         }
     }
@@ -299,13 +299,13 @@ public class ChessModel implements IChess {
      */
     @Override
     public boolean undoLastMove() {
-        System.out.println("coucou je tente un undo "+ allState.size());
-        if(allState.size()>1){
-            System.out.println("la taille de  liste d'état est égal a "+ allState.size());
-        allState.remove(allState.size()-1);
-            System.out.println("apres mon remove liste d'état est égal a "+ allState.size());
-        gameBoard = allState.get(allState.size() - 1);
-        return true;
+        System.out.println("coucou je tente un undo " + allState.size());
+        if (allState.size() > 1) {
+            System.out.println("la taille de  liste d'état est égal a " + allState.size());
+            allState.remove(allState.size() - 1);
+            System.out.println("apres mon remove liste d'état est égal a " + allState.size());
+            gameBoard = allState.get(allState.size() - 1);
+            return true;
         }
         System.out.println("ma liste est trop petite");
         return false;
