@@ -43,7 +43,7 @@ public class Utils {
 
             }
         }
-        return null;
+        return new IChess.ChessPosition(-32,-32);
     }
 
 
