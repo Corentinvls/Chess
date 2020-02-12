@@ -128,23 +128,25 @@ public class ChessModel implements IChess {
         }
         // save KING
         for (int i = list.size() - 1; i >= 0; i--) {
+            gameBoard.setTest(true);
+            Piece currentPiece = gameBoard.getPiece(p);
             Piece pieceTemp = null;
             ChessPosition pTemp = list.get(i);
-            if(!Utils.isEmpty(pTemp,gameBoard)){
+            if (!Utils.isEmpty(pTemp, gameBoard)) {
                 pieceTemp = gameBoard.getPiece(pTemp);
             }
             movePiece(p, pTemp);
 
             if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
                 list.remove(list.get(i));
-
             }
-            movePiece(pTemp, p);
-            if(pieceTemp != null){
-                gameBoard.setPiece(pTemp,pieceTemp);
+            gameBoard.setPiece(pTemp, null);
+            gameBoard.setPiece(p, currentPiece);
+            if (pieceTemp != null) {
+                gameBoard.setPiece(pTemp, pieceTemp);
             }
-            gameBoard.getPiece(p).setMovesCount(gameBoard.getPiece(p).getMovesCount() - 2);
-
+            gameBoard.getPiece(p).setMovesCount(gameBoard.getPiece(p).getMovesCount() - 1);
+            gameBoard.setTest(false);
         }
 
 
@@ -162,9 +164,35 @@ public class ChessModel implements IChess {
     public void movePiece(ChessPosition p0, ChessPosition p1) {
         gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount() + 1);
         gameBoard.setPiece(p1, gameBoard.getPiece(p0));
-        //transfore pion en dame
+        //transforme pion en dame
         if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
             gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
+            if (!gameBoard.isTest()) {
+
+                if(gameBoard.getPiece(p0).getChessColor()==ChessColor.CLR_BLACK) {
+                    List<ChessType> list = new ArrayList<>(gameBoard.getListTemoinBlack());
+                    for (int k = list.size() - 1; k >= 0; k--) {
+                        if (list.get(k) == ChessType.TYP_PAWN) {
+                            list.remove(list.get(k));
+                            list.add(ChessType.TYP_QUEEN);
+                            break;
+                        }
+                    }
+                    gameBoard.setListTemoinBlack(list);
+                }
+
+                if(gameBoard.getPiece(p0).getChessColor()==ChessColor.CLR_WHITE) {
+                    List<ChessType> list = new ArrayList<>(gameBoard.getListTemoinWhite());
+                    for (int k = list.size() - 1; k >= 0; k--) {
+                        if (list.get(k) == ChessType.TYP_PAWN) {
+                            list.remove(list.get(k));
+                            list.add(ChessType.TYP_QUEEN);
+                            break;
+                        }
+                    }
+                    gameBoard.setListTemoinWhite(list);
+                }
+            }
         }
         //section roque
         if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING) {
@@ -224,32 +252,20 @@ public class ChessModel implements IChess {
      */
     @Override
     public List<ChessType> getRemovedPieces(ChessColor color) {
-        List<ChessType> listTemoin = new ArrayList<>();
-        listTemoin.add(ChessType.TYP_KING);
-        listTemoin.add(ChessType.TYP_QUEEN);
-        for(int i=0; i<2 ;i++){
-            listTemoin.add(ChessType.TYP_BISHOP);
-        }
-        for(int i=0; i<2 ;i++){
-            listTemoin.add(ChessType.TYP_KNIGHT);
-        }
-        for(int i=0; i<2 ;i++){
-            listTemoin.add(ChessType.TYP_ROOK);
-        }
-        for(int i=0; i<8 ;i++){
-            listTemoin.add(ChessType.TYP_PAWN);
-        }
+
+        List<ChessType> listTemoin = new ArrayList<>(gameBoard.getListTemoinWhite());
+        if (color == ChessColor.CLR_BLACK)
+            listTemoin = new ArrayList<>(gameBoard.getListTemoinBlack());
         List<ChessType> listFinal = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                ChessPosition position = new ChessPosition(i,j);
-                if(!Utils.isEmpty(position, gameBoard) && color == gameBoard.getPiece(position).getChessColor()){
+                ChessPosition position = new ChessPosition(i, j);
+                if (!Utils.isEmpty(position, gameBoard) && color == gameBoard.getPiece(position).getChessColor()) {
                     listFinal.add(gameBoard.getPiece(position).getChessType());
-
                 }
             }
         }
-        for (int k = listFinal.size() - 1; k >= 0; k--){
+        for (int k = listFinal.size() - 1; k >= 0; k--) {
             listTemoin.remove(listFinal.get(k));
         }
         return listTemoin;

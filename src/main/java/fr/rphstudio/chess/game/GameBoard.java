@@ -2,6 +2,9 @@ package fr.rphstudio.chess.game;
 
 import fr.rphstudio.chess.interf.IChess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class used to created the chessboard.
  *
@@ -13,6 +16,10 @@ public class GameBoard {
      * Private field containing the chessboard.
      */
     private Piece[][] gameBoard;
+    private List<IChess.ChessType> listTemoinWhite;
+    private List<IChess.ChessType> listTemoinBlack;
+    private boolean test;
+
 
     /**
      * Constructor's GameBoard for define size's chessboard.
@@ -26,6 +33,11 @@ public class GameBoard {
             }
         }
         initPieces();
+        this.listTemoinWhite = new ArrayList<>();
+        this.listTemoinBlack = new ArrayList<>();
+        fillLists();
+        this.test = false;
+
 
     }
 
@@ -86,6 +98,31 @@ public class GameBoard {
 
     }
 
+    private void fillLists() {
+        listTemoinWhite.add(IChess.ChessType.TYP_KING);
+        listTemoinWhite.add(IChess.ChessType.TYP_QUEEN);
+        listTemoinBlack.add(IChess.ChessType.TYP_KING);
+        listTemoinBlack.add(IChess.ChessType.TYP_QUEEN);
+        for (int i = 0; i < 2; i++) {
+            listTemoinWhite.add(IChess.ChessType.TYP_BISHOP);
+            listTemoinBlack.add(IChess.ChessType.TYP_BISHOP);
+        }
+        for (int i = 0; i < 2; i++) {
+            listTemoinWhite.add(IChess.ChessType.TYP_KNIGHT);
+            listTemoinBlack.add(IChess.ChessType.TYP_KNIGHT);
+        }
+        for (int i = 0; i < 2; i++) {
+            listTemoinWhite.add(IChess.ChessType.TYP_ROOK);
+            listTemoinBlack.add(IChess.ChessType.TYP_ROOK);
+
+        }
+        for (int i = 0; i < 8; i++) {
+
+            listTemoinWhite.add(IChess.ChessType.TYP_PAWN);
+            listTemoinBlack.add(IChess.ChessType.TYP_PAWN);
+        }
+    }
+
     /**
      * Method used to get type's chess piece at this position.
      *
@@ -94,15 +131,43 @@ public class GameBoard {
      */
     public Piece getPiece(IChess.ChessPosition p) {
 
-            if(!Utils.isOutOfBound(p))
+        if (!Utils.isOutOfBound(p))
             return gameBoard[p.y][p.x];
-            else
+        else
             return null;
 
     }
 
-    public GameBoard setPiece(IChess.ChessPosition p,Piece piece) {
+    public GameBoard setPiece(IChess.ChessPosition p, Piece piece) {
         this.gameBoard[p.y][p.x] = piece;
+        return this;
+    }
+
+
+    public List<IChess.ChessType> getListTemoinWhite() {
+        return listTemoinWhite;
+    }
+
+    public GameBoard setListTemoinWhite(List<IChess.ChessType> listTemoinWhite) {
+        this.listTemoinWhite = listTemoinWhite;
+        return this;
+    }
+
+    public List<IChess.ChessType> getListTemoinBlack() {
+        return listTemoinBlack;
+    }
+
+    public GameBoard setListTemoinBlack(List<IChess.ChessType> listTemoinBlack) {
+        this.listTemoinBlack = listTemoinBlack;
+        return this;
+    }
+
+    public boolean isTest() {
+        return test;
+    }
+
+    public GameBoard setTest(boolean test) {
+        this.test = test;
         return this;
     }
 }
