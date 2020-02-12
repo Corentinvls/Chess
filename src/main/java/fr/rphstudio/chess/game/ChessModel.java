@@ -47,7 +47,7 @@ public class ChessModel implements IChess {
      */
     @Override
     public void reinit() {
-
+        this.gameBoard=new GameBoard();
     }
 
     /**
@@ -162,14 +162,17 @@ public class ChessModel implements IChess {
      */
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
+
         gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount() + 1);
         gameBoard.setPiece(p1, gameBoard.getPiece(p0));
+
         //transforme pion en dame
         if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
             gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
+
             if (!gameBoard.isTest()) {
 
-                if(gameBoard.getPiece(p0).getChessColor()==ChessColor.CLR_BLACK) {
+                if (gameBoard.getPiece(p0).getChessColor() == ChessColor.CLR_BLACK) {
                     List<ChessType> list = new ArrayList<>(gameBoard.getListTemoinBlack());
                     for (int k = list.size() - 1; k >= 0; k--) {
                         if (list.get(k) == ChessType.TYP_PAWN) {
@@ -181,7 +184,7 @@ public class ChessModel implements IChess {
                     gameBoard.setListTemoinBlack(list);
                 }
 
-                if(gameBoard.getPiece(p0).getChessColor()==ChessColor.CLR_WHITE) {
+                if (gameBoard.getPiece(p0).getChessColor() == ChessColor.CLR_WHITE) {
                     List<ChessType> list = new ArrayList<>(gameBoard.getListTemoinWhite());
                     for (int k = list.size() - 1; k >= 0; k--) {
                         if (list.get(k) == ChessType.TYP_PAWN) {
