@@ -4,6 +4,7 @@ import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
@@ -123,5 +124,31 @@ public class Utils {
             }
         }
         return list;
+    }
+
+    public static HashMap<IChess.ChessPosition,Piece> getStateBoard(GameBoard gameBoard) {
+        HashMap<IChess.ChessPosition,Piece> list = new HashMap<IChess.ChessPosition,Piece>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+                list.put(position,gameBoard.getPiece(position));
+            }
+        }
+        return list;
+    }
+
+    public static void saveBoard(GameBoard gameBoard,List<HashMap<IChess.ChessPosition, Piece>> allState){
+        if (!gameBoard.isTest()) {
+            GameBoard previousGameBoard = new GameBoard();
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+                    if (!Utils.isEmpty(position, gameBoard)) {
+                        previousGameBoard.setPiece(position, gameBoard.getPiece(position));
+                    }
+                }
+            }
+            allState.add(Utils.getStateBoard(gameBoard));
+        }
     }
 }

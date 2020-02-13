@@ -5,10 +5,7 @@ import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class used to retrieve the position's chess pieces.
@@ -21,7 +18,11 @@ public class ChessModel implements IChess {
      * Private field containing coordinates of chessboard.
      */
     private GameBoard gameBoard;
-    private List<GameBoard> allState;
+   // private List<GameBoard> allState;
+    private long timeW = 0;
+    private long timeB = 0;
+    private List<HashMap<ChessPosition, Piece>> allState;
+
     /**
      * Private field containing the only chessboard.
      */
@@ -32,8 +33,11 @@ public class ChessModel implements IChess {
      */
     private ChessModel() {
         this.gameBoard = new GameBoard();
-        this.allState = new ArrayList<GameBoard>();
-        allState.add(gameBoard);
+        //this.allState = new ArrayList<GameBoard>();
+
+       // allState.add(gameBoard);
+        this.allState = new ArrayList<>();
+        allState.add(Utils.getStateBoard(gameBoard));
 
     }
 
@@ -152,8 +156,6 @@ public class ChessModel implements IChess {
             gameBoard.getPiece(p).setMovesCount(gameBoard.getPiece(p).getMovesCount() - 1);
             gameBoard.setTest(false);
         }
-
-
         return list;
     }
 
@@ -241,7 +243,7 @@ public class ChessModel implements IChess {
 
         gameBoard.setPiece(p0, null);
         if (!gameBoard.isTest()) {
-            allState.add(gameBoard);
+            Utils.saveBoard(gameBoard,allState);
         }
     }
 
@@ -299,15 +301,20 @@ public class ChessModel implements IChess {
      */
     @Override
     public boolean undoLastMove() {
-        System.out.println("coucou je tente un undo " + allState.size());
         if (allState.size() > 1) {
-            System.out.println("la taille de  liste d'état est égal a " + allState.size());
             allState.remove(allState.size() - 1);
-            System.out.println("apres mon remove liste d'état est égal a " + allState.size());
-            gameBoard = allState.get(allState.size() - 1);
+            HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
+            state.forEach((key, value) -> gameBoard.setPiece(key, value));
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+                    if (!Utils.isEmpty(position, gameBoard)) {
+                        gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
+                    }
+                }
+            }
             return true;
         }
-        System.out.println("ma liste est trop petite");
         return false;
     }
 
@@ -320,9 +327,13 @@ public class ChessModel implements IChess {
      */
     @Override
     public long getPlayerDuration(ChessColor color, boolean isPlaying) {
+        if (color == ChessColor.CLR_WHITE && isPlaying){
+            return timeW = timeW+15;
+        } else if (color == ChessColor.CLR_BLACK && isPlaying){
+            return timeB = timeB+15;
+        }
         return 0;
     }
-
 
     /**
      * Method used to check the position's chess piece.
@@ -336,12 +347,4 @@ public class ChessModel implements IChess {
         return gameBoard.getPiece(chessPosition);
     }
 
-    public List<GameBoard> getAllState() {
-        return allState;
-    }
-
-    public ChessModel setAllState(List<GameBoard> allState) {
-        this.allState = allState;
-        return this;
-    }
 }
