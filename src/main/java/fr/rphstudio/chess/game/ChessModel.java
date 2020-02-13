@@ -238,19 +238,9 @@ public class ChessModel implements IChess {
         }
 
         gameBoard.setPiece(p0, null);
-        if (!gameBoard.isTest()) {
-            GameBoard previousGameboard = new GameBoard();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    ChessPosition position = new ChessPosition(i, j);
-                    if (!Utils.isEmpty(position, gameBoard)) {
-                        gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
-                        previousGameboard.setPiece(position, gameBoard.getPiece(position));
-                    }
-                }
-            }
-            allState.add(Utils.getStateBoard(gameBoard));
-        }
+        //enregistre board
+        Utils.saveBoard(gameBoard,allState);
+
     }
 
     /**
