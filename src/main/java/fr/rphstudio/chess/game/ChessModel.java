@@ -18,9 +18,9 @@ public class ChessModel implements IChess {
      * Private field containing coordinates of chessboard.
      */
     private GameBoard gameBoard;
-   // private List<GameBoard> allState;
     private long timeW = 0;
     private long timeB = 0;
+    private  long startTime = 0;
     private List<HashMap<ChessPosition, Piece>> allState;
 
     /**
@@ -38,7 +38,7 @@ public class ChessModel implements IChess {
        // allState.add(gameBoard);
         this.allState = new ArrayList<>();
         allState.add(Utils.getStateBoard(gameBoard));
-
+        startNewTimer();
     }
 
     /**
@@ -319,6 +319,21 @@ public class ChessModel implements IChess {
     }
 
     /**
+     * Starts a timer for the turn
+     */
+    public void startNewTimer() {
+        startTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Returns time of current turn
+     * @return Time in milliseconds
+     */
+    public long getCurrentTime() {
+        return System.currentTimeMillis() - startTime;
+    }
+
+    /**
      * Method used to know time's turn player.
      *
      * @param color     is the color's player.
@@ -328,9 +343,15 @@ public class ChessModel implements IChess {
     @Override
     public long getPlayerDuration(ChessColor color, boolean isPlaying) {
         if (color == ChessColor.CLR_WHITE && isPlaying){
-            return timeW = timeW+15;
+            timeW = 0;
+            return timeW += getCurrentTime()-timeB;
         } else if (color == ChessColor.CLR_BLACK && isPlaying){
-            return timeB = timeB+15;
+            timeB = 0;
+            return timeB += getCurrentTime()-timeW;
+        } else if (color == ChessColor.CLR_WHITE){
+            return timeW ;
+        } else if (color == ChessColor.CLR_BLACK){
+            return timeB ;
         }
         return 0;
     }
