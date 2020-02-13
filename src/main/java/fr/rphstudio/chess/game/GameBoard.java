@@ -18,6 +18,7 @@ public class GameBoard {
     private Piece[][] gameBoard;
     private List<IChess.ChessType> listTemoinWhite;
     private List<IChess.ChessType> listTemoinBlack;
+    private List<GameBoard> allState;
     private boolean test;
 
 

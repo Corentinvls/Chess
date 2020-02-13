@@ -4,6 +4,7 @@ import fr.rphstudio.chess.interf.IChess;
 import fr.rphstudio.chess.interf.OutOfBoardException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
@@ -20,7 +21,8 @@ public class Utils {
             throw new OutOfBoardException();
         }
     }
-    public static boolean isEmpty (IChess.ChessPosition p, GameBoard gameBoard ){
+
+    public static boolean isEmpty(IChess.ChessPosition p, GameBoard gameBoard) {
         return gameBoard.getPiece(p) == null;
     }
 
@@ -35,11 +37,12 @@ public class Utils {
     public static boolean isOutOfBound(IChess.ChessPosition p) {
         return ((p.x < 0 || p.x > 7) || p.y < 0 || p.y > 7);
     }
+
     public static IChess.ChessPosition getKingPosition(GameBoard gameBoard, IChess.ChessColor kingColor) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                IChess.ChessPosition position = new IChess.ChessPosition(i,j);
-                if (!isEmpty(position, gameBoard)){
+                IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+                if (!isEmpty(position, gameBoard)) {
 
                     IChess.ChessType type = gameBoard.getPiece(position).getChessType();
                     IChess.ChessColor color = gameBoard.getPiece(position).getChessColor();
@@ -50,7 +53,7 @@ public class Utils {
 
             }
         }
-        return new IChess.ChessPosition(-32,-32);
+        return new IChess.ChessPosition(-32, -32);
     }
 
 
@@ -105,6 +108,7 @@ public class Utils {
         }
         return list;
     }
+
     public static List<IChess.ChessPosition> allieMovement(IChess.ChessColor color, GameBoard gameBoard) {
         List<IChess.ChessPosition> list = new ArrayList<>();
 
@@ -120,6 +124,19 @@ public class Utils {
                         list.addAll(currentPiece.getMove(currentPosition, gameBoard));
                     }
                 }
+            }
+        }
+        return list;
+    }
+
+    public static HashMap<IChess.ChessPosition,Piece> getStateBoard(GameBoard gameBoard) {
+        HashMap<IChess.ChessPosition,Piece> list = new HashMap<IChess.ChessPosition,Piece>();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+
+                list.put(position,gameBoard.getPiece(position));
             }
         }
         return list;
