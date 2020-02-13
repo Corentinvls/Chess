@@ -42,10 +42,10 @@ public class Pawn implements IMove {
         }
 
 
-        if (!gameBoard.getPiece(p).asMoved()) {
+        if (!gameBoard.getPiece(p).asMoved() && (p.y==6 || p.y==1)){
             var *= 2;
             IChess.ChessPosition position2 = new IChess.ChessPosition(p.x, p.y + var);
-            if (Utils.isEmpty(position,gameBoard)) {
+            if (Utils.isEmpty(position,gameBoard)&&Utils.isEmpty(position2,gameBoard)) {
                 list.add(position2);
             }
 

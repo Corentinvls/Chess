@@ -12,14 +12,14 @@ import java.util.List;
 
 
 /**
- * Class used to retrieve the position's chess pieces.
+ * Class used to retrieve the chess pieces's position.
  *
  * @author Team KING
  */
 public class ChessModel implements IChess {
 
     /**
-     * Private field containing coordinates of chessboard.
+     * Private field containing chessboard's coordinates.
      */
     private GameBoard gameBoard = new GameBoard();
     private List<HashMap<ChessPosition, Piece>> allState;
@@ -29,7 +29,7 @@ public class ChessModel implements IChess {
     private static final IChess instance = new ChessModel();
 
     /**
-     * Constructor's ChessModel.
+     * ChessModel's Constructor .
      */
     private ChessModel() {
         this.allState = new ArrayList<>();
@@ -38,7 +38,7 @@ public class ChessModel implements IChess {
     }
 
     /**
-     * Instance of the chessboard.
+     * chessboard's Instance.
      */
     public static IChess getInstance() {
         return instance;
@@ -46,7 +46,6 @@ public class ChessModel implements IChess {
 
     /**
      * Method used to reset chessboard.
-     *
      */
     @Override
     public void reinit() {
@@ -115,15 +114,16 @@ public class ChessModel implements IChess {
      */
     @Override
     public List<ChessPosition> getPieceMoves(ChessPosition p) {
-
+//get the piece
         Piece piece = gameBoard.getPiece(p);
-
+//throw the out of bounds moves
         List<ChessPosition> list = piece.getMove(p, this.gameBoard);
         for (int i = list.size() - 1; i >= 0; i--) {
             if (Utils.isOutOfBound(list.get(i))) {
                 list.remove(list.get(i));
             }
         }
+
         for (int i = list.size() - 1; i >= 0; i--) {
             if (!Utils.isEmpty(list.get(i), gameBoard) && !Utils.isEnemy(p, list.get(i), gameBoard)) {
                 list.remove(list.get(i));
@@ -134,22 +134,55 @@ public class ChessModel implements IChess {
             gameBoard.setTest(true);
             Piece currentPiece = gameBoard.getPiece(p);
             Piece pieceTemp = null;
+            if (i<=list.size()-1) {
             ChessPosition pTemp = list.get(i);
+
             if (!Utils.isEmpty(pTemp, gameBoard)) {
                 pieceTemp = gameBoard.getPiece(pTemp);
             }
-            movePiece(p, pTemp);
+            if (!Utils.isOutOfBound(pTemp)) {
+                movePiece(p, pTemp);
+            }
+            if (!Utils.isEmpty(pTemp, gameBoard)) {
+                gameBoard.getPiece(pTemp).setMovesCount(gameBoard.getPiece(pTemp).getMovesCount() - 1);
 
-            if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
-                list.remove(list.get(i));
+                if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
+                    list.remove(list.get(i));
+                }
+                gameBoard.setPiece(pTemp, null);
+                gameBoard.setPiece(p, currentPiece);
+                if (pieceTemp != null) {
+                    gameBoard.setPiece(pTemp, pieceTemp);
+                }
             }
-            gameBoard.setPiece(pTemp, null);
-            gameBoard.setPiece(p, currentPiece);
-            if (pieceTemp != null) {
-                gameBoard.setPiece(pTemp, pieceTemp);
+//bonus grand roque
+                ChessPosition positionL3 = new ChessPosition(p.x - 3, p.y);
+                ChessPosition positionL2 = new ChessPosition(p.x - 2, p.y);
+                ChessPosition positionL1 = new ChessPosition(p.x - 1, p.y);
+                int indexThirdTile = Utils.getIndexOf(Utils.enemyMovement(gameBoard.getPiece(p).getChessColor(), gameBoard), positionL3);
+                int indexFirstTileGR = Utils.getIndexOf(Utils.enemyMovement(gameBoard.getPiece(p).getChessColor(), gameBoard), positionL1);
+                int indexToRemoveGR = Utils.getIndexOf(list, positionL2);
+                if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && indexThirdTile != -1 && indexToRemoveGR != -1) {
+                    list.remove(indexToRemoveGR);
+                } else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && indexFirstTileGR != -1 && indexToRemoveGR != -1) {
+                    list.remove(indexToRemoveGR);
+                }else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && getKingState(gameBoard.getPiece(p).getChessColor()) == ChessKingState.KING_THREATEN && indexToRemoveGR != -1) {
+                    list.remove(indexToRemoveGR);
+                }
+                //bonus petit roque
+                ChessPosition positionR2 = new ChessPosition(p.x + 2, p.y);
+                ChessPosition positionR1 = new ChessPosition(p.x + 1, p.y);
+                int indexFirstTile = Utils.getIndexOf(Utils.enemyMovement(gameBoard.getPiece(p).getChessColor(), gameBoard), positionR1);
+                int indexToRemovePR = Utils.getIndexOf(list, positionR2);
+                if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && indexFirstTile != -1 && indexToRemovePR != -1) {
+                    list.remove(indexToRemovePR);
+                } else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && getKingState(gameBoard.getPiece(p).getChessColor()) == ChessKingState.KING_THREATEN && indexToRemovePR != -1) {
+                    list.remove(indexToRemovePR);
+                }
+
+
+                gameBoard.setTest(false);
             }
-            gameBoard.getPiece(p).setMovesCount(gameBoard.getPiece(p).getMovesCount() - 1);
-            gameBoard.setTest(false);
         }
 
 
@@ -239,7 +272,9 @@ public class ChessModel implements IChess {
 
         gameBoard.setPiece(p0, null);
         //enregistre board
-        Utils.saveBoard(gameBoard,allState);
+        if (!gameBoard.isTest()) {
+            Utils.saveBoard(gameBoard, allState);
+        }
 
     }
 
@@ -302,6 +337,14 @@ public class ChessModel implements IChess {
             allState.remove(allState.size() - 1);
             HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
             state.forEach((key, value) -> gameBoard.setPiece(key, value));
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+                    if (!Utils.isEmpty(position, gameBoard)) {
+                        gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
+                    }
+                }
+            }
             return true;
         }
         return false;

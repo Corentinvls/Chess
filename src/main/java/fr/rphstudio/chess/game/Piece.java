@@ -110,7 +110,10 @@ public class Piece {
     }
 
     public Piece setMovesCount(int movesCount) {
+        if(this.movesCount>0){
         this.movesCount = movesCount;
+        return this;
+        }
         return this;
     }
 

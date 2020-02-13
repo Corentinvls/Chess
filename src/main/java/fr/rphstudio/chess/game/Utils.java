@@ -148,12 +148,21 @@ public class Utils {
                 for (int j = 0; j < 8; j++) {
                     IChess.ChessPosition position = new IChess.ChessPosition(i, j);
                     if (!Utils.isEmpty(position, gameBoard)) {
-                        gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
                         previousGameBoard.setPiece(position, gameBoard.getPiece(position));
+
                     }
                 }
             }
             allState.add(Utils.getStateBoard(gameBoard));
         }
     }
+    public static int getIndexOf(List<IChess.ChessPosition> listPostion, IChess.ChessPosition position){
+        for(int i=0;i<listPostion.size();i++){
+            if((listPostion.get(i)).equals(position)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
