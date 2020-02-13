@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Class used to retrieve the position's chess pieces.
@@ -310,21 +311,13 @@ public class ChessModel implements IChess {
      */
     @Override
     public boolean undoLastMove() {
-        System.out.println("coucou je tente un undo " + allState.size());
-        if (allState.size() > 1) {
-            System.out.println("la taille de  liste d'état est égal a " + allState.size());
-            allState.remove(allState.size() - 1);
-            System.out.println("apres mon remove liste d'état est égal a " + allState.size());
-            HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
-            for (Map.Entry couplePiecePosition : state.entrySet()) {
-                ChessPosition position = (ChessPosition) couplePiecePosition.getKey();
-                Piece piece = (Piece) couplePiecePosition.getValue();
-                gameBoard.setPiece(position, piece);
-            }
 
+        if (allState.size() > 1) {
+            allState.remove(allState.size() - 1);
+            HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
+            state.forEach((key, value) -> gameBoard.setPiece(key, value));
             return true;
         }
-        System.out.println("ma liste est trop petite");
         return false;
 
     }
