@@ -6,6 +6,8 @@ import fr.rphstudio.chess.interf.OutOfBoardException;
 
 
 import java.util.*;
+import java.util.zip.CheckedInputStream;
+import java.util.zip.CheckedOutputStream;
 
 
 /**
@@ -19,10 +21,9 @@ public class ChessModel implements IChess {
      * Private field containing chessboard's coordinates.
      */
     private GameBoard gameBoard;
-    private long timeW = 0;
-    private long timeB = 0;
-    private  long startTime = 0;
     private List<HashMap<ChessPosition, Piece>> allState;
+    private List<HashMap<Long, Long>> allTime;
+    HashMap<Long, Long> firstTime;
 
     /**
      * Private field containing the only chessboard.
@@ -35,8 +36,10 @@ public class ChessModel implements IChess {
     private ChessModel() {
         this.gameBoard = new GameBoard();
         this.allState = new ArrayList<>();
-        allState.add(Utils.getStateBoard(gameBoard));
-        startNewTimer();
+        this.allState.add(Utils.getStateBoard(gameBoard));
+        this.allTime = new ArrayList<>();
+        Utils.saveTime(this.gameBoard, this.allTime);
+
     }
 
     /**
@@ -136,30 +139,30 @@ public class ChessModel implements IChess {
             gameBoard.setTest(true);
             Piece currentPiece = gameBoard.getPiece(p);
             Piece pieceTemp = null;
-            if (i<=list.size()-1) {
-            ChessPosition pTemp = list.get(i);
+            if (i <= list.size() - 1) {
+                ChessPosition pTemp = list.get(i);
 
-            if (!Utils.isEmpty(pTemp, gameBoard)) {
-                pieceTemp = gameBoard.getPiece(pTemp);
-            }
-            if (!Utils.isOutOfBound(pTemp)) {
-                movePiece(p, pTemp);
-            }
-            if (!Utils.isEmpty(pTemp, gameBoard)) {
-               gameBoard.getPiece(pTemp).setMovesCount(gameBoard.getPiece(pTemp).getMovesCount() - 1);
-                //TODO
-                if(gameBoard.getPiece(pTemp).getChessType()==ChessType.TYP_QUEEN)
-                    System.out.println("Zone test"+ gameBoard.getPiece(pTemp).getMovesCount());
+                if (!Utils.isEmpty(pTemp, gameBoard)) {
+                    pieceTemp = gameBoard.getPiece(pTemp);
+                }
+                if (!Utils.isOutOfBound(pTemp)) {
+                    movePiece(p, pTemp);
+                }
+                if (!Utils.isEmpty(pTemp, gameBoard)) {
+                    gameBoard.getPiece(pTemp).setMovesCount(gameBoard.getPiece(pTemp).getMovesCount() - 1);
+                    //TODO
+                    if (gameBoard.getPiece(pTemp).getChessType() == ChessType.TYP_QUEEN)
+                        System.out.println("Zone test" + gameBoard.getPiece(pTemp).getMovesCount());
 
-                if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
-                    list.remove(list.get(i));
+                    if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
+                        list.remove(list.get(i));
+                    }
+                    gameBoard.setPiece(pTemp, null);
+                    gameBoard.setPiece(p, currentPiece);
+                    if (pieceTemp != null) {
+                        gameBoard.setPiece(pTemp, pieceTemp);
+                    }
                 }
-                gameBoard.setPiece(pTemp, null);
-                gameBoard.setPiece(p, currentPiece);
-                if (pieceTemp != null) {
-                    gameBoard.setPiece(pTemp, pieceTemp);
-                }
-            }
 //bonus grand roque
                 ChessPosition positionL3 = new ChessPosition(p.x - 3, p.y);
                 ChessPosition positionL2 = new ChessPosition(p.x - 2, p.y);
@@ -171,7 +174,7 @@ public class ChessModel implements IChess {
                     list.remove(indexToRemoveGR);
                 } else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && indexFirstTileGR != -1 && indexToRemoveGR != -1) {
                     list.remove(indexToRemoveGR);
-                }else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && getKingState(gameBoard.getPiece(p).getChessColor()) == ChessKingState.KING_THREATEN && indexToRemoveGR != -1) {
+                } else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && getKingState(gameBoard.getPiece(p).getChessColor()) == ChessKingState.KING_THREATEN && indexToRemoveGR != -1) {
                     list.remove(indexToRemoveGR);
                 }
                 //bonus petit roque
@@ -201,9 +204,9 @@ public class ChessModel implements IChess {
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
 
-       //TODO
-        if(gameBoard.getPiece(p0).getChessType()==ChessType.TYP_QUEEN)
-         System.out.println("nb mouv avant move"+ gameBoard.getPiece(p0).getMovesCount());
+        //TODO
+        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_QUEEN)
+            System.out.println("nb mouv avant move" + gameBoard.getPiece(p0).getMovesCount());
         gameBoard.setPiece(p1, gameBoard.getPiece(p0));
 
         //transforme pion en dame
@@ -278,11 +281,12 @@ public class ChessModel implements IChess {
         gameBoard.setPiece(p0, null);
 
         //TODO
-        if(gameBoard.getPiece(p1).getChessType()==ChessType.TYP_QUEEN)
-            System.out.println("nb mouv apres move"+ gameBoard.getPiece(p1).getMovesCount());
+        if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_QUEEN)
+            System.out.println("nb mouv apres move" + gameBoard.getPiece(p1).getMovesCount());
         //enregistre board
         if (!gameBoard.isTest()) {
             Utils.saveBoard(gameBoard, allState);
+            Utils.saveTime(gameBoard, allTime);
         }
 
     }
@@ -341,41 +345,48 @@ public class ChessModel implements IChess {
      */
     @Override
     public boolean undoLastMove() {
-
-        if (allState.size() > 1) {
-            allState.remove(allState.size() - 1);
-            HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
-            state.forEach((key, value) -> gameBoard.setPiece(key, value));
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    IChess.ChessPosition position = new IChess.ChessPosition(i, j);
-                    if (!Utils.isEmpty(position, gameBoard)) {
-
-                        gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
-                        if(gameBoard.getPiece(position).getChessType()==ChessType.TYP_QUEEN)
-                            System.out.println("nb mouv apres undo "+ gameBoard.getPiece(position).getMovesCount());
+        if (allState.size() > 1 || allTime.size() > 1) {
+            if (allState.size() > 1) {
+                allState.remove(allState.size() - 1);
+                HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
+                state.forEach((key, value) -> gameBoard.setPiece(key, value));
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        IChess.ChessPosition position = new IChess.ChessPosition(i, j);
+                        if (!Utils.isEmpty(position, gameBoard)) {
+                            gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
+                            if (gameBoard.getPiece(position).getChessType() == ChessType.TYP_QUEEN)
+                                System.out.println("nb mouv apres undo " + gameBoard.getPiece(position).getMovesCount());
+                        }
                     }
                 }
             }
+                if (allTime.size() > 1) {
+                    allTime.remove(allTime.size() - 1);
+                    HashMap<Long, Long> time = allTime.get(allTime.size() - 1);
+                    time.forEach((key, value) -> Utils.setTime(gameBoard, key, value));
+                    if (allTime.size() == 1) {
+                        gameBoard.startNewTimer();
+                    }
+                    // le probleme est la sert toi du isWhiteplaying
+                    gameBoard.setStartTime(gameBoard.getStartTime() + getCurrentTime() - gameBoard.getTimeB());
+                }
+
+
             return true;
         }
         return false;
-
     }
 
-    /**
-     * Starts a timer for the turn
-     */
-    public void startNewTimer() {
-        startTime = System.currentTimeMillis();
-    }
 
     /**
      * Returns time of current turn
+     *
      * @return Time in milliseconds
      */
     public long getCurrentTime() {
-        return System.currentTimeMillis() - startTime;
+
+        return System.currentTimeMillis() - gameBoard.getStartTime();
     }
 
     /**
@@ -387,16 +398,23 @@ public class ChessModel implements IChess {
      */
     @Override
     public long getPlayerDuration(ChessColor color, boolean isPlaying) {
-        if (color == ChessColor.CLR_WHITE && isPlaying){
-            timeW = 0;
-            return timeW += getCurrentTime()-timeB;
-        } else if (color == ChessColor.CLR_BLACK && isPlaying){
-            timeB = 0;
-            return timeB += getCurrentTime()-timeW;
-        } else if (color == ChessColor.CLR_WHITE){
-            return timeW ;
-        } else if (color == ChessColor.CLR_BLACK){
-            return timeB ;
+
+        long timeW = 0;
+        long timeB = 0;
+        if (color == ChessColor.CLR_WHITE && isPlaying) {
+            gameBoard.setWhitePlaying(true);
+            gameBoard.setTimeW(getCurrentTime() - gameBoard.getTimeB());
+            return getCurrentTime() - gameBoard.getTimeB();
+        } else if (color == ChessColor.CLR_BLACK && isPlaying) {
+            gameBoard.setWhitePlaying(false);
+            gameBoard.setTimeB(getCurrentTime() - gameBoard.getTimeW());
+            return getCurrentTime() - gameBoard.getTimeW();
+        } else if (color == ChessColor.CLR_WHITE) {
+            timeW = gameBoard.getTimeW();
+            return timeW;
+        } else if (color == ChessColor.CLR_BLACK) {
+            timeB = gameBoard.getTimeB();
+            return timeB;
         }
         return 0;
     }

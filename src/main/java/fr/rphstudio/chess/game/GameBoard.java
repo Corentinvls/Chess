@@ -19,8 +19,16 @@ public class GameBoard {
     private List<IChess.ChessType> listTemoinWhite;
     private List<IChess.ChessType> listTemoinBlack;
     private List<GameBoard> allState;
+    private long timeW ;
+    private long timeB ;
+    private  long startTime ;
     private boolean test;
+    private boolean whitePlaying;
 
+
+    public GameBoard(long timeW, long timeB, long startTime) {
+
+    }
 
     /**
      * Constructor's GameBoard for define size's chessboard.
@@ -38,7 +46,11 @@ public class GameBoard {
         this.listTemoinBlack = new ArrayList<>();
         fillLists();
         this.test = false;
-
+        this.whitePlaying=true;
+        this.timeW =0;
+        this.timeB = 0;
+        this.startTime = 0;
+        startNewTimer();
 
     }
 
@@ -169,6 +181,48 @@ public class GameBoard {
 
     public GameBoard setTest(boolean test) {
         this.test = test;
+        return this;
+    }
+
+    public long getTimeW() {
+        return timeW;
+    }
+
+    public GameBoard setTimeW(long timeW) {
+        this.timeW = timeW;
+        return this;
+    }
+
+    public long getTimeB() {
+        return timeB;
+    }
+
+    public GameBoard setTimeB(long timeB) {
+        this.timeB = timeB;
+        return this;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public GameBoard setStartTime(long startTime) {
+        this.startTime = startTime;
+        return this;
+    } /**
+     * Starts a timer for the turn
+     */
+    public void startNewTimer() {
+        this.setStartTime( System.currentTimeMillis()) ;
+    }
+
+
+    public boolean isWhitePlaying() {
+        return whitePlaying;
+    }
+
+    public GameBoard setWhitePlaying(boolean whitePlaying) {
+        this.whitePlaying = whitePlaying;
         return this;
     }
 }

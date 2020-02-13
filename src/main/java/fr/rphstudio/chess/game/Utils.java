@@ -156,6 +156,17 @@ public class Utils {
             allState.add(Utils.getStateBoard(gameBoard));
         }
     }
+    public static void saveTime(GameBoard gameBoard,List<HashMap<Long, Long>> allTime){
+        if (!gameBoard.isTest()) {
+            HashMap<Long,Long> time= new HashMap<>();
+            time.put(gameBoard.getTimeW(),gameBoard.getTimeB());
+            allTime.add(time);
+        }
+    }
+    public static void setTime(GameBoard gameBoard,Long timeW,Long timeB){
+        gameBoard.setTimeW(timeW);
+        gameBoard.setTimeB(timeB);
+    }
     public static int getIndexOf(List<IChess.ChessPosition> listPostion, IChess.ChessPosition position){
         for(int i=0;i<listPostion.size();i++){
             if((listPostion.get(i)).equals(position)){
@@ -164,5 +175,7 @@ public class Utils {
         }
         return -1;
     }
+
+
 
 }
