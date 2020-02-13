@@ -144,7 +144,10 @@ public class ChessModel implements IChess {
                 movePiece(p, pTemp);
             }
             if (!Utils.isEmpty(pTemp, gameBoard)) {
-                gameBoard.getPiece(pTemp).setMovesCount(gameBoard.getPiece(pTemp).getMovesCount() - 1);
+               gameBoard.getPiece(pTemp).setMovesCount(gameBoard.getPiece(pTemp).getMovesCount() - 1);
+                //TODO
+                if(gameBoard.getPiece(pTemp).getChessType()==ChessType.TYP_QUEEN)
+                    System.out.println("Zone test"+ gameBoard.getPiece(pTemp).getMovesCount());
 
                 if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
                     list.remove(list.get(i));
@@ -198,7 +201,9 @@ public class ChessModel implements IChess {
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
 
-        gameBoard.getPiece(p0).setMovesCount(gameBoard.getPiece(p0).getMovesCount() + 1);
+       //TODO
+        if(gameBoard.getPiece(p0).getChessType()==ChessType.TYP_QUEEN)
+         System.out.println("nb mouv avant move"+ gameBoard.getPiece(p0).getMovesCount());
         gameBoard.setPiece(p1, gameBoard.getPiece(p0));
 
         //transforme pion en dame
@@ -269,8 +274,12 @@ public class ChessModel implements IChess {
             }
 
         }
-
+        gameBoard.getPiece(p1).setMovesCount(gameBoard.getPiece(p1).getMovesCount() + 1);
         gameBoard.setPiece(p0, null);
+
+        //TODO
+        if(gameBoard.getPiece(p1).getChessType()==ChessType.TYP_QUEEN)
+            System.out.println("nb mouv apres move"+ gameBoard.getPiece(p1).getMovesCount());
         //enregistre board
         if (!gameBoard.isTest()) {
             Utils.saveBoard(gameBoard, allState);
@@ -341,7 +350,10 @@ public class ChessModel implements IChess {
                 for (int j = 0; j < 8; j++) {
                     IChess.ChessPosition position = new IChess.ChessPosition(i, j);
                     if (!Utils.isEmpty(position, gameBoard)) {
+
                         gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
+                        if(gameBoard.getPiece(position).getChessType()==ChessType.TYP_QUEEN)
+                            System.out.println("nb mouv apres undo "+ gameBoard.getPiece(position).getMovesCount());
                     }
                 }
             }
