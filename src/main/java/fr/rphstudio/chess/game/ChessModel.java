@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
 
 /**
  * Class used to retrieve the position's chess pieces.
@@ -22,7 +21,7 @@ public class ChessModel implements IChess {
     /**
      * Private field containing coordinates of chessboard.
      */
-    private GameBoard gameBoard;
+    private GameBoard gameBoard = new GameBoard();
     private List<HashMap<ChessPosition, Piece>> allState;
     /**
      * Private field containing the only chessboard.
@@ -33,8 +32,7 @@ public class ChessModel implements IChess {
      * Constructor's ChessModel.
      */
     private ChessModel() {
-        this.gameBoard = new GameBoard();
-        this.allState = new ArrayList<HashMap<ChessPosition, Piece>>();
+        this.allState = new ArrayList<>();
         allState.add(Utils.getStateBoard(gameBoard));
 
     }
@@ -49,7 +47,6 @@ public class ChessModel implements IChess {
     /**
      * Method used to reset chessboard.
      *
-     * @return void
      */
     @Override
     public void reinit() {
@@ -164,7 +161,6 @@ public class ChessModel implements IChess {
      *
      * @param p0 position's chess piece before.
      * @param p1 position's chess piece after.
-     * @return void
      */
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
