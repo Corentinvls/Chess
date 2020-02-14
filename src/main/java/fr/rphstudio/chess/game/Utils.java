@@ -9,10 +9,8 @@ import java.util.List;
 
 public class Utils {
     /**
-     * Method used to check the position's chess piece.
-     *
+     * Method used to check the chess piece's position.
      * @param p position of the chess piece.
-     * @return if the chess piece is in the chessboard or not.
      */
     public static void checkPosition(IChess.ChessPosition p) throws OutOfBoardException {
         if (p.x < 0 || p.x > 7) {
@@ -22,10 +20,23 @@ public class Utils {
         }
     }
 
+    /**
+     * Method to check if a tile is empty
+     * @param p
+     * @param gameBoard
+     * @return bool
+     */
     public static boolean isEmpty(IChess.ChessPosition p, GameBoard gameBoard) {
         return gameBoard.getPiece(p) == null;
     }
 
+    /**
+     * method to check if a piece is an enemy
+     * @param currentPosition
+     * @param targetPosition
+     * @param gameBoard
+     * @return bool
+     */
     public static boolean isEnemy(IChess.ChessPosition currentPosition, IChess.ChessPosition targetPosition, GameBoard gameBoard) {
         if (!isEmpty(targetPosition, gameBoard)) {
             return gameBoard.getPiece(currentPosition).getChessColor() != gameBoard.getPiece(targetPosition).getChessColor();
@@ -34,10 +45,21 @@ public class Utils {
         }
     }
 
+    /**
+     * method to know if the position if out of bounds
+     * @param p
+     * @return bool
+     */
     public static boolean isOutOfBound(IChess.ChessPosition p) {
         return ((p.x < 0 || p.x > 7) || p.y < 0 || p.y > 7);
     }
 
+    /**
+     * method to know king's position for a selected color
+     * @param gameBoard
+     * @param kingColor
+     * @return ChessPosition
+     */
     public static IChess.ChessPosition getKingPosition(GameBoard gameBoard, IChess.ChessColor kingColor) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -57,7 +79,12 @@ public class Utils {
     }
 
 
-    //}
+    /**
+     * method to get position of the rook allies
+     * @param p
+     * @param gameBoard
+     * @return list
+     */
     public static ArrayList<IChess.ChessPosition> getRookPosAlly(IChess.ChessPosition p, GameBoard gameBoard) {
         IChess.ChessPosition positionBL = new IChess.ChessPosition(0, 0);
         IChess.ChessPosition positionBR = new IChess.ChessPosition(7, 0);
@@ -89,6 +116,12 @@ public class Utils {
         return listRook;
     }
 
+    /**
+     * method to get all enemies movements
+     * @param color
+     * @param gameBoard
+     * @return list
+     */
     public static List<IChess.ChessPosition> enemyMovement(IChess.ChessColor color, GameBoard gameBoard) {
         List<IChess.ChessPosition> list = new ArrayList<>();
 
@@ -109,26 +142,11 @@ public class Utils {
         return list;
     }
 
-    public static List<IChess.ChessPosition> allieMovement(IChess.ChessColor color, GameBoard gameBoard) {
-        List<IChess.ChessPosition> list = new ArrayList<>();
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-
-                IChess.ChessPosition currentPosition = new IChess.ChessPosition(i, j);
-
-                Piece currentPiece = gameBoard.getPiece(currentPosition);
-
-                if (currentPiece != null) {
-                    if (color == currentPiece.getChessColor()) {
-                        list.addAll(currentPiece.getMove(currentPosition, gameBoard));
-                    }
-                }
-            }
-        }
-        return list;
-    }
-
+    /**
+     * method to get all the information of the piece in the board
+     * @param gameBoard
+     * @return list
+     */
     public static HashMap<IChess.ChessPosition,Piece> getStateBoard(GameBoard gameBoard) {
         HashMap<IChess.ChessPosition,Piece> list = new HashMap<IChess.ChessPosition,Piece>();
 
@@ -141,6 +159,12 @@ public class Utils {
         }
         return list;
     }
+
+    /**
+     * method to save the state of the board in the list allState
+     * @param gameBoard
+     * @param allState
+     */
     public static void saveBoard(GameBoard gameBoard,List<HashMap<IChess.ChessPosition, Piece>> allState){
         if (!gameBoard.isTest()) {
             GameBoard previousGameBoard = new GameBoard();
@@ -156,6 +180,11 @@ public class Utils {
             allState.add(Utils.getStateBoard(gameBoard));
         }
     }
+    /**
+     * method to save the thime of the board in the list allTime
+     * @param gameBoard
+     * @param allTime
+     */
     public static void saveTime(GameBoard gameBoard,List<HashMap<Long, Long>> allTime){
         if (!gameBoard.isTest()) {
             HashMap<Long,Long> time= new HashMap<>();
@@ -163,10 +192,24 @@ public class Utils {
             allTime.add(time);
         }
     }
+
+    /**
+     * method to set timeB and timeW
+     * @param gameBoard
+     * @param timeW
+     * @param timeB
+     */
     public static void setTime(GameBoard gameBoard,Long timeW,Long timeB){
         gameBoard.setTimeW(timeW);
         gameBoard.setTimeB(timeB);
     }
+
+    /**
+     * method to know the index of a position in a list
+     * @param listPostion
+     * @param position
+     * @return int
+     */
     public static int getIndexOf(List<IChess.ChessPosition> listPostion, IChess.ChessPosition position){
         for(int i=0;i<listPostion.size();i++){
             if((listPostion.get(i)).equals(position)){

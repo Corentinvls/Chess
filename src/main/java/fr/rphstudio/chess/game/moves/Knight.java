@@ -15,6 +15,12 @@ import java.util.List;
  * @author Team KING
  */
 public class Knight implements IMove {
+    /**
+     * method to get all possible moves
+     * @param p
+     * @param gameBoard
+     * @return
+     */
     @Override
     public List<ChessPosition> getPossibleMoves(ChessPosition p, GameBoard gameBoard) {
 

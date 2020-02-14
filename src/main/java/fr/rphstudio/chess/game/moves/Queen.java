@@ -14,6 +14,12 @@ import java.util.List;
  * @author Team KING
  */
 public class Queen implements IMove {
+    /**
+     * method to get all possible moves
+     * @param p
+     * @param gameBoard
+     * @return
+     */
     @Override
     public List<IChess.ChessPosition> getPossibleMoves(IChess.ChessPosition p, GameBoard gameBoard) {
 

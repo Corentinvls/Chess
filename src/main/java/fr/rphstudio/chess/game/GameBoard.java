@@ -111,6 +111,9 @@ public class GameBoard {
 
     }
 
+    /**
+     * method to fill the listTemoinB and lisTemoinW
+     */
     private void fillLists() {
         listTemoinWhite.add(IChess.ChessType.TYP_KING);
         listTemoinWhite.add(IChess.ChessType.TYP_QUEEN);
@@ -138,7 +141,7 @@ public class GameBoard {
 
     /**
      * Method used to get type's chess piece at this position.
-     *
+
      * @param p position's chess piece.
      * @return type's chess piece.
      */
@@ -151,6 +154,12 @@ public class GameBoard {
 
     }
 
+    /**
+     * method to set a piece in a position
+     * @param p
+     * @param piece
+     * @return this
+     */
     public GameBoard setPiece(IChess.ChessPosition p, Piece piece) {
         this.gameBoard[p.y][p.x] = piece;
         return this;
@@ -161,66 +170,124 @@ public class GameBoard {
         return listTemoinWhite;
     }
 
+    /**
+     * set the list of the total piece for the black team
+     * @param listTemoinWhite
+     * @return list
+     */
     public GameBoard setListTemoinWhite(List<IChess.ChessType> listTemoinWhite) {
         this.listTemoinWhite = listTemoinWhite;
         return this;
     }
 
+    /**
+     * set the list of the total piece for the black team
+     * @return list
+     */
     public List<IChess.ChessType> getListTemoinBlack() {
         return listTemoinBlack;
     }
 
+    /**
+     * set the list of the total piece for the black team
+     * @param listTemoinBlack
+     * @return this
+     */
     public GameBoard setListTemoinBlack(List<IChess.ChessType> listTemoinBlack) {
         this.listTemoinBlack = listTemoinBlack;
         return this;
     }
 
+    /**
+     * methode to know if the gameboard is in a test phase
+     * @return test
+     */
     public boolean isTest() {
         return test;
     }
 
+    /**
+     * set the gameboard in a test phase
+     * @param test
+     * @return this
+     */
     public GameBoard setTest(boolean test) {
         this.test = test;
         return this;
     }
 
+    /**
+     * get the timer for the white team
+     * @return timeW
+     */
     public long getTimeW() {
         return timeW;
     }
 
+    /**
+     * set the timer for the white team
+     * @param timeW
+     * @return this
+     */
     public GameBoard setTimeW(long timeW) {
         this.timeW = timeW;
         return this;
     }
 
+    /**
+     * get the timer for the black team
+     * @return timeB
+     */
     public long getTimeB() {
         return timeB;
     }
 
+    /**
+     *  set the timer for the black team
+     * @param timeB
+     * @return this
+     */
     public GameBoard setTimeB(long timeB) {
         this.timeB = timeB;
         return this;
     }
 
+    /**
+     * get the timer of the party
+     * @return startTime
+     */
     public long getStartTime() {
         return startTime;
     }
 
+    /**
+     * set the timer for the party
+     * @param startTime
+     * @return this
+     */
     public GameBoard setStartTime(long startTime) {
         this.startTime = startTime;
         return this;
-    } /**
-     * Starts a timer for the turn
+    }
+    /**
+     * Starts a timer for the party
      */
     public void startNewTimer() {
         this.setStartTime( System.currentTimeMillis()) ;
     }
 
-
+    /**
+     * method to know who is playing
+     * @return bool true if white is playing
+     */
     public boolean isWhitePlaying() {
         return whitePlaying;
     }
 
+    /**
+     * method to set who is playing
+     * @return bool true if white is playing
+     */
     public GameBoard setWhitePlaying(boolean whitePlaying) {
         this.whitePlaying = whitePlaying;
         return this;

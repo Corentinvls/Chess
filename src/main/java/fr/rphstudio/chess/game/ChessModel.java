@@ -21,7 +21,13 @@ public class ChessModel implements IChess {
      * Private field containing chessboard's coordinates.
      */
     private GameBoard gameBoard;
+    /**
+     * Private field containing all previous states of the pieces.
+     */
     private List<HashMap<ChessPosition, Piece>> allState;
+    /**
+     * Private field containing all previous time.
+     */
     private List<HashMap<Long, Long>> allTime;
     HashMap<Long, Long> firstTime;
 
@@ -119,22 +125,31 @@ public class ChessModel implements IChess {
      */
     @Override
     public List<ChessPosition> getPieceMoves(ChessPosition p) {
-//get the piece
+        /**
+         * get the piece
+         */
+
         Piece piece = gameBoard.getPiece(p);
-//throw the out of bounds moves
+        /**
+         * throw the out of bounds moves
+         */
         List<ChessPosition> list = piece.getMove(p, this.gameBoard);
         for (int i = list.size() - 1; i >= 0; i--) {
             if (Utils.isOutOfBound(list.get(i))) {
                 list.remove(list.get(i));
             }
         }
-
+/**
+ * throw the moves on allies
+ */
         for (int i = list.size() - 1; i >= 0; i--) {
             if (!Utils.isEmpty(list.get(i), gameBoard) && !Utils.isEnemy(p, list.get(i), gameBoard)) {
                 list.remove(list.get(i));
             }
         }
-        // save KING
+        /**
+         * throw moves who put the king in danger
+         */
         for (int i = list.size() - 1; i >= 0; i--) {
             gameBoard.setTest(true);
             Piece currentPiece = gameBoard.getPiece(p);
@@ -150,10 +165,6 @@ public class ChessModel implements IChess {
                 }
                 if (!Utils.isEmpty(pTemp, gameBoard)) {
                     gameBoard.getPiece(pTemp).setMovesCount(gameBoard.getPiece(pTemp).getMovesCount() - 1);
-                    //TODO
-                    if (gameBoard.getPiece(pTemp).getChessType() == ChessType.TYP_QUEEN)
-                        System.out.println("Zone test" + gameBoard.getPiece(pTemp).getMovesCount());
-
                     if (getKingState(gameBoard.getPiece(pTemp).getChessColor()) == ChessKingState.KING_THREATEN) {
                         list.remove(list.get(i));
                     }
@@ -163,7 +174,9 @@ public class ChessModel implements IChess {
                         gameBoard.setPiece(pTemp, pieceTemp);
                     }
                 }
-//bonus grand roque
+                /**
+                 * throw the roque
+                 */
                 ChessPosition positionL3 = new ChessPosition(p.x - 3, p.y);
                 ChessPosition positionL2 = new ChessPosition(p.x - 2, p.y);
                 ChessPosition positionL1 = new ChessPosition(p.x - 1, p.y);
@@ -177,7 +190,6 @@ public class ChessModel implements IChess {
                 } else if (gameBoard.getPiece(p).getChessType() == ChessType.TYP_KING && getKingState(gameBoard.getPiece(p).getChessColor()) == ChessKingState.KING_THREATEN && indexToRemoveGR != -1) {
                     list.remove(indexToRemoveGR);
                 }
-                //bonus petit roque
                 ChessPosition positionR2 = new ChessPosition(p.x + 2, p.y);
                 ChessPosition positionR1 = new ChessPosition(p.x + 1, p.y);
                 int indexFirstTile = Utils.getIndexOf(Utils.enemyMovement(gameBoard.getPiece(p).getChessColor(), gameBoard), positionR1);
@@ -203,16 +215,16 @@ public class ChessModel implements IChess {
      */
     @Override
     public void movePiece(ChessPosition p0, ChessPosition p1) {
-
-        //TODO
-        if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_QUEEN)
-            System.out.println("nb mouv avant move" + gameBoard.getPiece(p0).getMovesCount());
         gameBoard.setPiece(p1, gameBoard.getPiece(p0));
 
-        //transforme pion en dame
+        /**
+         * transform the pawn in queen
+         */
         if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_PAWN && (p1.y == 0 || p1.y == 7)) {
             gameBoard.setPiece(p1, new Piece(gameBoard.getPiece(p1).getChessColor(), IChess.ChessType.TYP_QUEEN));
-
+/**
+ * fake moves to test if it put king in danger
+ */
             if (!gameBoard.isTest()) {
 
                 if (gameBoard.getPiece(p0).getChessColor() == ChessColor.CLR_BLACK) {
@@ -240,7 +252,9 @@ public class ChessModel implements IChess {
                 }
             }
         }
-        //section roque
+        /**
+         * test if the king is safe after roque
+         */
         if (gameBoard.getPiece(p0).getChessType() == ChessType.TYP_KING) {
 
             ArrayList<IChess.ChessPosition> listRookPos = Utils.getRookPosAlly(p0, gameBoard);
@@ -261,7 +275,7 @@ public class ChessModel implements IChess {
                     }
 
                 }
-                //grand roque
+
                 if (tempPos.x == 0 && p1.x == p0.x - 2) {
                     ChessPosition target = new ChessPosition(p1.x + 1, p1.y);
                     gameBoard.getPiece(tempPos).setMovesCount(gameBoard.getPiece(tempPos).getMovesCount() + 1);
@@ -280,10 +294,10 @@ public class ChessModel implements IChess {
         gameBoard.getPiece(p1).setMovesCount(gameBoard.getPiece(p1).getMovesCount() + 1);
         gameBoard.setPiece(p0, null);
 
-        //TODO
-        if (gameBoard.getPiece(p1).getChessType() == ChessType.TYP_QUEEN)
-            System.out.println("nb mouv apres move" + gameBoard.getPiece(p1).getMovesCount());
-        //enregistre board
+
+/**
+ * save the board and the time
+ */
         if (!gameBoard.isTest()) {
             Utils.saveBoard(gameBoard, allState);
             Utils.saveTime(gameBoard, allTime);
@@ -350,29 +364,24 @@ public class ChessModel implements IChess {
                 allState.remove(allState.size() - 1);
                 HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
                 state.forEach((key, value) -> gameBoard.setPiece(key, value));
-               /* for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        IChess.ChessPosition position = new IChess.ChessPosition(i, j);
-                        if (!Utils.isEmpty(position, gameBoard)) {
-                            gameBoard.getPiece(position).setMovesCount(gameBoard.getPiece(position).getMovesCount() - 1);
-                            if (gameBoard.getPiece(position).getChessType() == ChessType.TYP_QUEEN)
-                                System.out.println("nb mouv apres undo " + gameBoard.getPiece(position).getMovesCount());
-                        }
-                    }
-                }*/
             }
                 if (allTime.size() > 1) {
                     allTime.remove(allTime.size() - 1);
                     HashMap<Long, Long> time = allTime.get(allTime.size() - 1);
-                    time.forEach((key, value) -> Utils.setTime(gameBoard, key, value));
-                    if (allTime.size() == 1) {
-                        gameBoard.startNewTimer();
+                    for (Map.Entry<Long, Long> entry : time.entrySet()) {
+                        Long key = entry.getKey();
+                        Long value = entry.getValue();
+                        if (allTime.size() == 1) {
+                            gameBoard.startNewTimer();
+                        }
+                        else if(gameBoard.isWhitePlaying())
+                            gameBoard.setStartTime(gameBoard.getStartTime()+key);
+                        else
+                            gameBoard.setStartTime(gameBoard.getStartTime()+value);
+                        Utils.setTime(gameBoard, key, value);
                     }
-                    // le probleme est la sert toi du isWhiteplaying
-                    if(gameBoard.isWhitePlaying())
-                    gameBoard.setStartTime(gameBoard.getStartTime() + getCurrentTime() - gameBoard.getTimeB());
-                    else
-                        gameBoard.setStartTime(gameBoard.getStartTime() + getCurrentTime() - gameBoard.getTimeW());
+
+
                 }
 
 
@@ -401,8 +410,6 @@ public class ChessModel implements IChess {
      */
     @Override
     public long getPlayerDuration(ChessColor color, boolean isPlaying) {
-
-
 
         if (color == ChessColor.CLR_WHITE && isPlaying) {
             gameBoard.setWhitePlaying(true);

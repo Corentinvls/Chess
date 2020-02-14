@@ -11,28 +11,30 @@ import java.util.List;
  * @author Team KING
  */
 public class Piece {
-
+    /**
+     * Private field move counter
+     */
     private int movesCount;
     /**
-     * Private field intance's move.
+     * Private field instance move.
      */
     private IMove move;
 
     /**
-     * Private field containing the color's chess piece.
+     * Private field containing the piece's chess color.
      */
     private ChessColor chessColor;
 
     /**
-     * Private field containing the type's chess piece.
+     * Private field containing the piece's chess type.
      */
     private ChessType chessType;
 
     /**
-     * Constructor's Piece.
+     *  Piece's constructor.
      *
-     * @param chessColor color's piece.
-     * @param chessType  type's piece.
+     * @param chessColor piece's color.
+     * @param chessType   piece's type.
      */
     public Piece(ChessColor chessColor, ChessType chessType) {
 
@@ -65,18 +67,18 @@ public class Piece {
     }
 
     /**
-     * Geter's color of chess piece.
+     * Getter of the color of chess piece.
      *
-     * @return color's chess piece.
+     * @return chess piece's color .
      */
     public ChessColor getChessColor() {
         return chessColor;
     }
 
     /**
-     * Seter's color of chess piece.
+     * Setter of the color of chess piece.
      *
-     * @return color's chess piece.
+     * @return this.
      */
     public Piece setChessColor(ChessColor chessColor) {
         this.chessColor = chessColor;
@@ -84,24 +86,30 @@ public class Piece {
     }
 
     /**
-     * Geter's type of chess piece.
+     * Getter of the type of chess piece.
      *
-     * @return type's chess piece.
+     * @return chess piece's type .
      */
     public ChessType getChessType() {
         return chessType;
     }
 
     /**
-     * Seter's type of chess piece.
+     * Setter of the type of chess piece.
      *
-     * @return type's chess piece.
+     * @return this.
      */
     public Piece setChessType(ChessType chessType) {
         this.chessType = chessType;
         return this;
     }
 
+    /**
+     * list of all possible moves for a piece
+     * @param p
+     * @param gameBoard
+     * @return
+     */
     public List<ChessPosition> getMove(ChessPosition p, GameBoard gameBoard) {
         return move.getPossibleMoves(p, gameBoard);
     }
@@ -109,6 +117,11 @@ public class Piece {
         return this.movesCount>0 ;
     }
 
+    /**
+     * method to set the movecount
+     * @param movesCount
+     * @return
+     */
     public Piece setMovesCount(int movesCount) {
         if(movesCount>=0){
         this.movesCount = movesCount;
@@ -117,6 +130,10 @@ public class Piece {
         return this;
     }
 
+    /**
+     * method to get the movecount
+     * @return
+     */
     public int getMovesCount() {
         return movesCount;
     }
