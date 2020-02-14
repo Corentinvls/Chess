@@ -350,7 +350,7 @@ public class ChessModel implements IChess {
                 allState.remove(allState.size() - 1);
                 HashMap<IChess.ChessPosition, Piece> state = allState.get(allState.size() - 1);
                 state.forEach((key, value) -> gameBoard.setPiece(key, value));
-                for (int i = 0; i < 8; i++) {
+               /* for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         IChess.ChessPosition position = new IChess.ChessPosition(i, j);
                         if (!Utils.isEmpty(position, gameBoard)) {
@@ -359,7 +359,7 @@ public class ChessModel implements IChess {
                                 System.out.println("nb mouv apres undo " + gameBoard.getPiece(position).getMovesCount());
                         }
                     }
-                }
+                }*/
             }
                 if (allTime.size() > 1) {
                     allTime.remove(allTime.size() - 1);
@@ -369,7 +369,10 @@ public class ChessModel implements IChess {
                         gameBoard.startNewTimer();
                     }
                     // le probleme est la sert toi du isWhiteplaying
+                    if(gameBoard.isWhitePlaying())
                     gameBoard.setStartTime(gameBoard.getStartTime() + getCurrentTime() - gameBoard.getTimeB());
+                    else
+                        gameBoard.setStartTime(gameBoard.getStartTime() + getCurrentTime() - gameBoard.getTimeW());
                 }
 
 
@@ -399,22 +402,20 @@ public class ChessModel implements IChess {
     @Override
     public long getPlayerDuration(ChessColor color, boolean isPlaying) {
 
-        long timeW = 0;
-        long timeB = 0;
+
+
         if (color == ChessColor.CLR_WHITE && isPlaying) {
             gameBoard.setWhitePlaying(true);
-            gameBoard.setTimeW(getCurrentTime() - gameBoard.getTimeB());
-            return getCurrentTime() - gameBoard.getTimeB();
+            gameBoard.setTimeW(getCurrentTime()- gameBoard.getTimeB());
+            return gameBoard.getTimeW() ;
         } else if (color == ChessColor.CLR_BLACK && isPlaying) {
             gameBoard.setWhitePlaying(false);
-            gameBoard.setTimeB(getCurrentTime() - gameBoard.getTimeW());
-            return getCurrentTime() - gameBoard.getTimeW();
+            gameBoard.setTimeB(getCurrentTime()- gameBoard.getTimeW());
+            return gameBoard.getTimeB() ;
         } else if (color == ChessColor.CLR_WHITE) {
-            timeW = gameBoard.getTimeW();
-            return timeW;
+            return gameBoard.getTimeW();
         } else if (color == ChessColor.CLR_BLACK) {
-            timeB = gameBoard.getTimeB();
-            return timeB;
+            return gameBoard.getTimeB();
         }
         return 0;
     }
